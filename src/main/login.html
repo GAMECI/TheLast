@@ -8,59 +8,46 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
 
 <head>
-<title>Gaming Login Form Responsive Widget Template  :: w3layouts</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Gaming Login Form Widget Tab Form,Login Forms,Sign up Forms,Registration Forms,News letter Forms,Elements"/>
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
-<style>
-.button {
-  padding: 15px 25px;
-  font-size: 24px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  background-color: #0B4C5F;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
-}
-
-.button:hover {background-color: #0B4C5F}
-
-.button:active {
-  background-color: #0B4C5F;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-</style>
-
-
+	<title>The Last Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	 
+	<script src="resources/js/controllerLogin.js"></script>
+	<link href="resources/css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="resources/css/combo.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 
 <body>
-	<div class="padding-all">
-		<div class="header">
-			<h1><img src="./images/5.png" alt=" "> THE LAST</h1>
-		</div>
+	<p class="texto">THE LAST</p>
+	<div class="Registro">		
 
-		<div class="design-w3l">
-			<div class="mail-form-agile">
-				<form action="#" method="post">
-					<input type="text" name="name" placeholder="User Name" required=""/>
-					</br>	
-					</br>
-					<button class="button">Conect<button/>
-				</form>
-			</div>
-		  <!--<div class="clear"> </div>-->
-		</div>
+		<span class="fontawesome-user"></span>
+		<input id="idName" name="idName" type="text" required placeholder="User name" autocomplete="off"><br/><br/>
 		
-		<div class="footer">
-		<p>© 2017 Gaming Login form. All Rights Reserved | Design by  <a href="https://w3layouts.com/" >  w3layouts </a></p>
-		</div>
-	</div>
+		<form name = "selectorColor">
+			<label class="container">
+			  <font color = "blue">Blue</font>
+			  <input type="radio" name="radio" value = "blue">
+			  <span class="checkmark"></span>
+			</label>
+			<label class="container">
+			  <font color = "red">Red</font>
+			  <input type="radio" name="radio" value = "red">
+			  <span class="checkmark"></span>
+			</label>
+			<label class="container">
+			  <font color = "green">Green</font>
+			  <input type="radio" name="radio" value = "green">
+			  <span class="checkmark"></span>
+			</label>
+			<label class="container">
+			  <font color = "yellow">Yellow</font>
+			  <input type="radio" name="radio" value = "yellow">
+			  <span class="checkmark"></span>
+			</label><br/>
+		</form>
+		
+		<input type="submit" value="Play" onclick="dateLogin(document.selectorColor.radio)">
 </body>
+
 </html>
