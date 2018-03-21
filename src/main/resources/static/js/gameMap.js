@@ -39,7 +39,7 @@ $(function(){
 
 $(document).keydown(function(e){
           switch(e.keyCode){
-            $("#player").setAnimation();
+            $("#player").setAnimation(playerAnimation["up"]);
             if(e.keyCode== "w"){
                 $("#player").setAnimation(playerAnimation["up"]);
                 $("#player").y(10,true);
