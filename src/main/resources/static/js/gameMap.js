@@ -9,8 +9,7 @@ var PLAYGROUND_WIDTH = 2000;
 
 $(function(){
     var background3 = new $.gQ.Animation({imageURL:"./js/bg/background.png"});
-
-        playerAnimation["up] = new $.gameQuery.Animation({imageURL: "js/character/shooterUp.png", numberOfFrame: 6, delta: 14, rate: 60, type: $.gameQuery.ANIMATION_VERTICAL});});
+        playerAnimation["up"] = new $.gameQuery.Animation({imageURL: "js/character/shooterUp.png", numberOfFrame: 6, delta: 14, rate: 60, type: $.gameQuery.ANIMATION_VERTICAL});});
         playerAnimation["down"] = new $.gameQuery.Animation({imageURL: "js/character/shooterDown.png", numberOfFrame: 6, delta: 14, rate: 60, type: $.gameQuery.ANIMATION_VERTICAL});});
         playerAnimation["left"] = new $.gameQuery.Animation({imageURL: "js/character/shooterLeft.png", numberOfFrame: 6, delta: 14, rate: 60, type: $.gameQuery.ANIMATION_HORIZONTAL});
         playerAnimation["right"] = new $.gameQuery.Animation({imageURL: "js/character/shooterRight.png", numberOfFrame: 6, delta: 14, rate: 60, type: $.gameQuery.ANIMATION_HORIZONTAL});        
