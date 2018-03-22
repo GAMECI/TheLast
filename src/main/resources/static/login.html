@@ -8,23 +8,30 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <html>
 
 <head>
-	<title>The Last Login</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Last Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	 
-	<script src="resources/js/controllerLogin.js"></script>
-	<link href="resources/css/style.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="resources/css/combo.css" rel="stylesheet" type="text/css" media="all" />
+    <script src="/js/controllerLogin.js"></script>
+    <script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+    <script language="JavaScript" type="text/javascript" src="js/jquery.gamequery.js"></script>
+    <script language="JavaScript" type="text/javascript" src="js/gameMap.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="js/stompApp.js"></script>
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/css/combo.css" rel="stylesheet" type="text/css" media="all" />
 </head>
 
-<body>
+<body onload="app.init()">
 	<p class="texto">THE LAST</p>
-	<div class="Registro">		
-
+	<div id="playground">
+	<div id="index" class="Registro" >
 		<span class="fontawesome-user"></span>
 		<input id="idName" name="idName" type="text" required placeholder="User name" autocomplete="off"><br/><br/>
+		
 		<span class="fontawesome-user"></span>
-		<input id="idGame" name="idGame" type="number" required placeholder="Id game" autocomplete="off"><br/><br/>
+		<input id="idGame" name="idGame" type="number" required placeholder="Id game" autocomplete="off"><br/><br/>		
 		
 		<form name = "selectorColor">
 			<label class="container">
@@ -50,6 +57,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		</form>
 		
 		<input id="start" type="submit" value="Play" onclick="dateLogin(document.selectorColor.radio)">
+     </div>
+     </div>
 </body>
 
 </html>

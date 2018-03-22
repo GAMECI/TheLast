@@ -6,5 +6,5 @@ function dateLogin(ctrl){
 			var color = ctrl[i].value;
 		}
 	}
-	alert('{ Nombre: ' + name + ' , ' + 'Color: ' + color + ' , ' + 'IdGame: ' + game + ' }');
+	//alert('{ Nombre: ' + name + ' , ' + 'Color: ' + color + ' , ' + 'IdGame: ' + game + ' }');
 }
