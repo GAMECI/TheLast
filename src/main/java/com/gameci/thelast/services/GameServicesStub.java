@@ -28,8 +28,15 @@ public class GameServicesStub implements GameServices {
 
     @Override
     public void addNewWarriorToMap(Warrior warrior, int idGame) {
-        if(games.containsKey(idGame))
-           games.get(idGame).addWarrior(warrior);
+        if(games.containsKey(idGame)){
+            Map actualMap=games.get(idGame);
+            if(!actualMap.containsWarrior(warrior.getName()))
+                games.get(idGame).addWarrior(warrior);
+            else{
+                //crear excepcion
+            }
+        }
+           
     }
 
     @Override

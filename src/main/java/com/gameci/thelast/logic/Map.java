@@ -34,6 +34,13 @@ public class Map {
         if(warriors.containsKey(name))
             warriors.remove(name);
     } 
+    
+    public boolean containsWarrior(String name){
+        boolean resp=false;
+        if(warriors.containsKey(name))
+            resp=true;
+        return resp;
+    }
     public Collection<Warrior> getWarriors(){
         Collection<Warrior> values=null;
         if(warriors!=null)
