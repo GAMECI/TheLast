@@ -5,7 +5,8 @@ var playerAnimation= new Array();
 
 
 var addPlayer= function(event){
-    alert(event.x);
+    if($("#"+event.name).val()!=undefined)
+        $("#"+event.name).remove();
     $("#players").addSprite(event.name,{width:53,height:39,animation:playerAnimation["idle"],posx:event.x, posy:event.y});
 };
 
@@ -48,7 +49,7 @@ $(function(){
                 $("#index").remove();
                 setTimeout(function (){
                     app.publishPlayer(70,60,color,name);
-                },1000);
+                },500);
             })
     });
 

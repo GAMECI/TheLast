@@ -45,20 +45,20 @@ public class Warrior {
     public String getName(){
         return name;
     }
-    public String getHealt(){
-        return name;
+    public int getHealt(){
+        return healt;
     }
     public String getColor(){
-        return name;
+        return color;
     }
-    public String getScore(){
-        return name;
+    public int getScore(){
+        return score;
     }
-    public String getX(){
-        return name;
+    public int getX(){
+        return x;
     }
-    public String getY(){
-        return name;
+    public int getY(){
+        return y;
     }
     public void setName(String name){
         this.name=name;

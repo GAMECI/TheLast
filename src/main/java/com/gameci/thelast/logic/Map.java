@@ -5,9 +5,11 @@
  */
 package com.gameci.thelast.logic;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 /**
@@ -32,4 +34,10 @@ public class Map {
         if(warriors.containsKey(name))
             warriors.remove(name);
     } 
+    public Collection<Warrior> getWarriors(){
+        Collection<Warrior> values=null;
+        if(warriors!=null)
+            values=warriors.values();
+        return values;
+    }
 }
