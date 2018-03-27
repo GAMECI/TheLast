@@ -1,4 +1,9 @@
-com/gameci/thelast1/logic/Weapon.class
-com/gameci/thelast/TheLastWebSocketConfig.class
-com/gameci/thelast1/MainApp.class
-com/gameci/thelast1/logic/Warrior.class
+com/gameci/thelast/MainApp.class
+com/gameci/thelast/logic/Weapon.class
+com/gameci/thelast/stompController/stompController.class
+com/gameci/thelast/logic/Warrior.class
+com/gameci/thelast/services/GameServicesStub.class
+com/gameci/thelast/stompController/TheLastWebSocketConfig.class
+com/gameci/thelast/services/GameServicesException.class
+com/gameci/thelast/logic/Map.class
+com/gameci/thelast/services/GameServices.class

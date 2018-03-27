@@ -1,15 +1,12 @@
 
-
-
-
-
 var PLAYGROUND_HEIGHT= 2000;
 var PLAYGROUND_WIDTH = 2000;
 var playerAnimation= new Array();
 
 
 var addPlayer= function(event){
-    $("#players").addSprite("player2",event);
+    alert(event.x);
+    $("#players").addSprite(event.name,{width:53,height:39,animation:playerAnimation["idle"],posx:event.x, posy:event.y});
 };
 
 $(function(){
@@ -34,14 +31,24 @@ $(function(){
     //Intialize the background
 
     $("#background").addSprite("background3",{width:PLAYGROUND_WIDTH,height:PLAYGROUND_HEIGHT,animation:background3});
-    $("#players").addSprite("player",{width:53,height:39,animation:playerAnimation["idle"],posx:60, posy:60})
+    //$("#players").addSprite("player",{width:53,height:39,animation:playerAnimation["idle"],posx:60, posy:60})
 
 
 
     $("#start").click(function () {
+            var name= $('#idName').val(); 
             $.playground().startGame(function () {
+                app.init($('#idGame').val());
+                var ctrl=document.selectorColor.radio;
+                for(i=0;i<ctrl.length;i++){
+                    if(ctrl[i].checked){
+			var color = ctrl[i].value;
+                    }   
+                }
                 $("#index").remove();
-                app.publishPlayer({width:53,height:39,animation:playerAnimation["idle"],posx:60, posy:60});
+                setTimeout(function (){
+                    app.publishPlayer(70,60,color,name);
+                },1000);
             })
     });
 
