@@ -38,6 +38,23 @@ public class GameServicesStub implements GameServices {
         }
            
     }
+    
+    @Override
+    public void updateWarrior(Warrior warrior,int idGame){
+        if(games.containsKey(idGame)){
+            Map actualMap=games.get(idGame);
+            if(actualMap.containsWarrior(warrior.getName())){
+                actualMap.getWarrior(warrior.getName()).setHealt(warrior.getHealt());
+                actualMap.getWarrior(warrior.getName()).setScore(warrior.getScore());
+                actualMap.getWarrior(warrior.getName()).setX(warrior.getX());
+                actualMap.getWarrior(warrior.getName()).setY(warrior.getY());
+                actualMap.getWarrior(warrior.getName()).setStatus(warrior.getStatus());
+            }   
+            else{
+                //crear excepcion
+            }
+        }
+    }
 
     @Override
     public Map getMap(int idGame) {

@@ -16,18 +16,20 @@ public class Warrior {
     private int score;
     private int x;
     private int y;
+    private String status;
     
     public Warrior(){
         
     }
     
-    public Warrior(String name,int healt,String color,int score,int x,int y){
+    public Warrior(String name,int healt,String color,int score,int x,int y,String status){
         this.name=name;
         this.healt=healt;
         this.color=color;
         this.score=score;
         this.x=x;
         this.y=y;
+        this.status=status;
     }
     
     public void shoot(){
@@ -59,6 +61,12 @@ public class Warrior {
     }
     public int getY(){
         return y;
+    }
+    public String getStatus(){
+        return status;
+    }
+    public void setStatus(String status){
+        this.status=status;
     }
     public void setName(String name){
         this.name=name;

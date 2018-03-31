@@ -47,4 +47,12 @@ public class Map {
             values=warriors.values();
         return values;
     }
+    
+    public Warrior getWarrior(String name){
+        Warrior selectedWarrior=null;
+        if(warriors.containsKey(name)){
+            selectedWarrior=warriors.get(name);
+        }
+        return selectedWarrior;
+    }
 }

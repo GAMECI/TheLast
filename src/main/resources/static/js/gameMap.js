@@ -9,7 +9,12 @@ var alReady=false;
 var addPlayer= function(event){
     if($("#"+event.name).val()!=undefined)
         $("#"+event.name).remove();
-    $("#players").addSprite(event.name,{width:53,height:39,animation:playerAnimation["idle"],posx:event.x, posy:event.y});
+    if(event.status=="up" || event.status=="down"){
+        $("#players").addSprite(event.name,{width:39,height:53,animation:playerAnimation[event.status],posx:event.x, posy:event.y});
+    }else{
+        $("#players").addSprite(event.name,{width:53,height:39,animation:playerAnimation[event.status],posx:event.x, posy:event.y});
+    }
+    
     alReady=true;
 };
 
@@ -54,11 +59,12 @@ $(function(){
                 }
                 $("#index").remove();
                 setTimeout(function (){
-                    app.publishPlayer(70,60,color,playerName);
-                },500);
+                    app.publishPlayer(70,60,color,playerName,"idle");
+                },800);
             })
     });
     
+   
     $(document).keydown(function(e){
         if(alReady){
             var playerposx = $("#"+playerName).x();
@@ -69,20 +75,16 @@ $(function(){
 		
                     break;
                 case 37: //this is left! (left arrow)
-                    $("#"+playerName).remove();
-                    $("#players").addSprite(playerName,{width:53,height:39,animation:playerAnimation["left"],posx:playerposx-10,posy:playerposy});
+                    app.updatePlayer(playerposx-10,playerposy,"left");
                     break;
                 case 38: //this is up! (up arrow)
-                    $("#"+playerName).remove();
-                    $("#players").addSprite(playerName,{width:39,height:53,animation:playerAnimation["up"],posx:playerposx,posy:playerposy-10});
+                    app.updatePlayer(playerposx,playerposy-10,"up");
                     break;
                 case 39: //this is right (right arrow)
-                    $("#"+playerName).remove();
-                    $("#players").addSprite(playerName,{width:53,height:39,animation:playerAnimation["right"],posx:playerposx+10,posy:playerposy});
+                    app.updatePlayer(playerposx+10,playerposy,"right");
                     break;
                 case 40: //this is down! (down arrow)
-                    $("#"+playerName).remove();
-                    $("#players").addSprite(playerName,{width:39,height:53,animation:playerAnimation["down"],posx:playerposx,posy:playerposy+10});
+                    app.updatePlayer(playerposx,playerposy+10,"down");                    
                     break;
             }
         }   

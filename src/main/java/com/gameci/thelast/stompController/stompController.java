@@ -25,44 +25,33 @@ public class stompController {
     @Autowired
     SimpMessagingTemplate msgt;
     
-    GameServicesStub gss = new  GameServicesStub();
+    private GameServicesStub gss = new  GameServicesStub();
+    private Warrior warrior;
+    private int idGame;
+    
     
     @MessageMapping("/player.{idGame}")
     public void handlePlayerEvent(Warrior warrior,@DestinationVariable int idGame){
-        boolean possible=false;
-        Random rm =  new Random();
+        boolean first=false;
+        this.warrior=warrior;
+        this.idGame=idGame;
         Map game=gss.getMap(idGame);
-        int minVal =60;
-        int maxVal =200;
-        int newX=minVal;
-        int newY=minVal;
-        loadWarriors(idGame,game);
-        if(game==null)
+        if(game==null){
             gss.createNewMap(idGame);
-        else{
-            Collection<Warrior> values = game.getWarriors();
-            synchronized(values){
-                while(!possible){
-                    boolean breakLoop=false;
-                    newX=rm.nextInt(maxVal)+minVal;
-                    newY=rm.nextInt(maxVal)+minVal;
-                    for(Warrior i:values){
-                        if(i.getX()==newX && i.getY()==newY){
-                            breakLoop=true;
-                            break;
-                        }        
-                    }
-                    if(!breakLoop)
-                        possible=true;
-                }
-            }
-            warrior.setX(newX);
-            warrior.setY(newY);
+            game=gss.getMap(idGame);
+            first=true;
         }
-        gss.addNewWarriorToMap(warrior, idGame);
+        if(game.containsWarrior(warrior.getName())){
+            updateWarrior();
+        }else{
+            addNewWarrior(first);
+        }        
         System.out.println(warrior.toString());
         msgt.convertAndSend("/topic/player."+idGame,warrior);
     }
+    
+    
+    
     
     public void loadWarriors(int idGame, Map game){
         if(game!=null){
@@ -74,6 +63,44 @@ public class stompController {
             }
         }
     }
+    
+    public void addNewWarrior(boolean first){
+        boolean possible=false;
+        Random rm =  new Random();
+        Map game=gss.getMap(idGame);
+        int minVal =60;
+        int maxVal =200;
+        int newX=minVal;
+        int newY=minVal;
+        if(!first){
+            loadWarriors(idGame,game);
+            Collection<Warrior> values = game.getWarriors();
+                synchronized(values){
+                    while(!possible){
+                        boolean breakLoop=false;
+                        newX=rm.nextInt(maxVal)+minVal;
+                        newY=rm.nextInt(maxVal)+minVal;
+                        for(Warrior i:values){
+                            if(i.getX()==newX && i.getY()==newY){
+                                breakLoop=true;
+                                break;
+                            }        
+                        }
+                        if(!breakLoop)
+                            possible=true;
+                    }
+                }
+                warrior.setX(newX);
+                warrior.setY(newY);
+                first=true;
+        }
+        gss.addNewWarriorToMap(warrior, idGame);
+    }
+    
+    public void updateWarrior(){
+        gss.updateWarrior(warrior, idGame);
+    }
+    
          
 }
 
