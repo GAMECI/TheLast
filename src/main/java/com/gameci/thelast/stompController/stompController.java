@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class stompController {
+ 
     @Autowired
     SimpMessagingTemplate msgt;
     

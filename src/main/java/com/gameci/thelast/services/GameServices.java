@@ -7,6 +7,7 @@ package com.gameci.thelast.services;
 
 import com.gameci.thelast.logic.Map;
 import com.gameci.thelast.logic.Warrior;
+import com.gameci.thelast.logic.Zombie;
 
 /**
  *
@@ -18,5 +19,7 @@ public interface  GameServices {
     void addNewWarriorToMap(Warrior warrior,int idGame) throws GameServicesException;
     void updateWarrior(Warrior warrior,int idGame) throws GameServicesException;
     Map getMap(int idGame)throws GameServicesException;
+    void addNewZombieToMap(Zombie zombie,int idGame) throws GameServicesException;
+    void updateZombie(Zombie zombie,int idGame) throws GameServicesException;
    
 }

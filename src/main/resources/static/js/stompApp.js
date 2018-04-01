@@ -18,6 +18,14 @@ var app = (function () {
             this.status=status;
         }
     }
+	
+	class Zombie{		
+		constructor(healt,posx,posy){
+			this.healt=healt;
+			this.posx=posx;
+			this.posy=posy;		
+		}		
+	}
     
     var connectAndSubscribe = function (idG) {
         idGame=idG;
@@ -30,8 +38,9 @@ var app = (function () {
             console.log('Connected: ' + frame);
             
             stompClient.subscribe('/topic/player.'+idG, function (event) {
-                var jsonEvent = JSON.parse(event.body);
+                var jsonEvent = JSON.parse(event.body);				
                 addPlayer(jsonEvent);
+				
             });
             connected=true;
         });

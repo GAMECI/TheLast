@@ -18,11 +18,13 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class Map {
     ConcurrentHashMap<String,Warrior>  warriors;
-    private int idGame;
+    ConcurrentHashMap<String,Zombie>  zombies;
+    private int idGame;        
     
     public Map(int idGame){
         this.idGame=idGame;
         warriors= new ConcurrentHashMap<String,Warrior>();
+        zombies = new ConcurrentHashMap<String,Zombie>();
     }
     
     public void addWarrior(Warrior warrior){
@@ -55,4 +57,35 @@ public class Map {
         }
         return selectedWarrior;
     }
+    
+    //ZOMBIES
+    
+    public Collection<Zombie> getZombies(){
+        Collection<Zombie> values=null;
+        if(zombies!=null)
+            values=zombies.values();
+        return values;
+    }
+    
+    public void addZombie(Zombie zombie){
+        if(!warriors.containsKey(zombie.getId()))
+            zombies.put(zombie.getId(),zombie);
+    }
+    
+    public void deleteZombie(String id){
+        if(warriors.containsKey(id))
+            warriors.remove(id);
+    }
+    
+    public Zombie getZombie(String id){
+        Zombie selectedZombie=null;
+        if(zombies.containsKey(id)){
+            selectedZombie=zombies.get(id);
+        }
+        return selectedZombie;
+    }
+    
+        
+    
+    
 }

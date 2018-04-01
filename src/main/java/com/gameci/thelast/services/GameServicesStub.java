@@ -7,6 +7,7 @@ package com.gameci.thelast.services;
 
 import com.gameci.thelast.logic.Map;
 import com.gameci.thelast.logic.Warrior;
+import com.gameci.thelast.logic.Zombie;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -63,6 +64,28 @@ public class GameServicesStub implements GameServices {
             game = games.get(idGame);
         return game;
         
+    }
+
+    @Override
+    public void addNewZombieToMap(Zombie zombie, int idGame) throws GameServicesException {
+        if(games.containsKey(idGame)){
+            Map actualMap=games.get(idGame);
+            if(!actualMap.containsWarrior(zombie.getId()))
+                games.get(idGame).addZombie(zombie);
+        }
+    }
+
+    @Override
+    public void updateZombie(Zombie zombie, int idGame) throws GameServicesException {        
+        if(games.containsKey(idGame)){
+            Map actualMap=games.get(idGame);
+            if(actualMap.containsWarrior(zombie.getId())){
+                actualMap.getZombie(zombie.getId()).setId(zombie.getId());
+                actualMap.getZombie(zombie.getId()).setHealt(zombie.getHealt());
+                actualMap.getZombie(zombie.getId()).setPosx(zombie.getPosx());
+                actualMap.getZombie(zombie.getId()).setPosy(zombie.getPosy());
+            }                        
+        }
     }
     
 }
