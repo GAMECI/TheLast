@@ -14,14 +14,30 @@ public class Zombie {
     private int posx;
     private int posy;    
     private String id;
+    private String status;
     
-    public Zombie(int healt, int posx, int posy, String id){
+    public Zombie(){
+        
+    }
+    
+    public Zombie(int healt, int posx, int posy, String id, String status){
         this.id=id;
         this.healt = healt;
         this.posx = posx;
         this.posy = posy;    
+        this.status=status;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    
+    
     public String getId() {
         return id;
     }

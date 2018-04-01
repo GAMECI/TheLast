@@ -67,7 +67,7 @@ public class GameServicesStub implements GameServices {
     }
 
     @Override
-    public void addNewZombieToMap(Zombie zombie, int idGame) throws GameServicesException {
+    public void addNewZombieToMap(Zombie zombie, int idGame){
         if(games.containsKey(idGame)){
             Map actualMap=games.get(idGame);
             if(!actualMap.containsWarrior(zombie.getId()))
@@ -76,7 +76,7 @@ public class GameServicesStub implements GameServices {
     }
 
     @Override
-    public void updateZombie(Zombie zombie, int idGame) throws GameServicesException {        
+    public void updateZombie(Zombie zombie, int idGame){        
         if(games.containsKey(idGame)){
             Map actualMap=games.get(idGame);
             if(actualMap.containsWarrior(zombie.getId())){

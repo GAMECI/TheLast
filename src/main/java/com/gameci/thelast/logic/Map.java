@@ -43,6 +43,7 @@ public class Map {
             resp=true;
         return resp;
     }
+    
     public Collection<Warrior> getWarriors(){
         Collection<Warrior> values=null;
         if(warriors!=null)
@@ -83,6 +84,13 @@ public class Map {
             selectedZombie=zombies.get(id);
         }
         return selectedZombie;
+    }
+    
+    public boolean containsZombie(String id){
+        boolean resp=false;
+        if(zombies.containsKey(id))
+            resp=true;
+        return resp;
     }
     
         

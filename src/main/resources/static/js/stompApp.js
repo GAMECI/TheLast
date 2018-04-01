@@ -1,11 +1,13 @@
 var connected=false;
 var warrior;
+var zombie;
 
 var app = (function () {
 
 
     var stompClient = null;
     var idGame=0;
+	var numZombie=0;
 
     class Warrior{
         constructor(name,healt,color,score,x,y,status){
@@ -20,10 +22,12 @@ var app = (function () {
     }
 	
 	class Zombie{		
-		constructor(healt,posx,posy){
+		constructor(id, healt,posx,posy,status){
+			this.id=id;
 			this.healt=healt;
 			this.posx=posx;
 			this.posy=posy;		
+			this.status=status;			
 		}		
 	}
     
@@ -35,13 +39,21 @@ var app = (function () {
 
         //subscribe to /topic/TOPICXX when connections succeed
         stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-            
-            stompClient.subscribe('/topic/player.'+idG, function (event) {
+            console.log('Connected: ' + frame);            						
+			
+            stompClient.subscribe('/topic/player.'+idG, function (event){				
                 var jsonEvent = JSON.parse(event.body);				
-                addPlayer(jsonEvent);
+                addPlayer(jsonEvent);				
+            });
+			
+			stompClient.subscribe('/topic/zombie.'+idG, function (event){				
+                var jsonEvent = JSON.parse(event.body);				
+                addZombie(jsonEvent);
 				
             });
+			
+			
+			
             connected=true;
         });
 
@@ -64,10 +76,21 @@ var app = (function () {
                 var score=0;
                 var x=posx;
                 var y=posy;
-                warrior=new Warrior(name,healt,color,score,x,y,status);
-                stompClient.send("/app/player."+idGame,{},JSON.stringify(warrior));
+                warrior=new Warrior(name,healt,color,score,x,y,status);				
+                stompClient.send("/app/player."+idGame,{},JSON.stringify(warrior));								
             }
             
+        },
+				
+		publishZombie: function(posx,posy,status){			
+			numZombie+=1;
+            if(stompClient != null){
+                var healt=100;                
+                var x=posx;
+                var y=posy;                
+				zombie = new Zombie(numZombie, healt,posx,posy,status);				
+                stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombie));								
+            }            
         },
         
         updatePlayer: function(posx,posy,status){

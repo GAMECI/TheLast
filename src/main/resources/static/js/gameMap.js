@@ -5,18 +5,31 @@ var playerName;
 var playerAnimation= new Array();
 var alReady=false;
 
+var zombieAnimation= new Array();
 
-var addPlayer= function(event){
+
+var addPlayer= function(event){	
     if($("#"+event.name).val()!=undefined)
         $("#"+event.name).remove();
     if(event.status=="up" || event.status=="down"){
-        $("#players").addSprite(event.name,{width:39,height:53,animation:playerAnimation[event.status],posx:event.x, posy:event.y});
+        $("#players").addSprite(event.name,{width:39,height:53,animation:playerAnimation[event.status],posx:event.x, posy:event.y});		
     }else{
-        $("#players").addSprite(event.name,{width:53,height:39,animation:playerAnimation[event.status],posx:event.x, posy:event.y});
+        $("#players").addSprite(event.name,{width:53,height:39,animation:playerAnimation[event.status],posx:event.x, posy:event.y});		
     }
     
     alReady=true;
 };
+
+var addZombie= function(event){		    
+    if(event.status=="up" || event.status=="down"){        		
+		$("#zombies").addSprite(event.id,{width:39,height:53,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
+    }else{        		
+		$("#zombies").addSprite(event.id,{width:65,height:70,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
+    }    
+    alReady=true;
+};
+
+
 
 $(function(){
 
@@ -27,19 +40,28 @@ $(function(){
              
                 
 
-    //Player
-
-    playerAnimation["idle"]=new $.gQ.Animation({imageURL:"./js/player/survivor-idle_handgun_0.png"})
+    //Player		
+	
+    playerAnimation["idle"]=new $.gQ.Animation({imageURL:"./js/player/survivor-idle_handgun_0.png"})	
     playerAnimation["up"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterUp.png"});
     playerAnimation["down"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterDown.png"});
     playerAnimation["left"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterLeft.png"});
-    playerAnimation["right"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});   
+    playerAnimation["right"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});
+	
+	//Zombie		
+	
+	zombieAnimation["idle"] = new $.gameQuery.Animation({imageURL: "./js/zombie/imagen.png"});
+	zombieAnimation["up"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});
+    zombieAnimation["down"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});
+    zombieAnimation["left"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});
+    zombieAnimation["right"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});
+	
 
     //Initialize the game
     $("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH})
         .addGroup("background",{width: PLAYGROUND_WIDTH, height:PLAYGROUND_HEIGHT}).end()
         .addGroup("players",{width:PLAYGROUND_WIDTH,height:PLAYGROUND_HEIGHT}).end()
-        .addGroup("zoombies",{width:PLAYGROUND_WIDTH,height:PLAYGROUND_HEIGHT});
+        .addGroup("zombies",{width:PLAYGROUND_WIDTH,height:PLAYGROUND_HEIGHT});
 
     //Intialize the background
 
@@ -58,8 +80,9 @@ $(function(){
                     }   
                 }
                 $("#index").remove();
-                setTimeout(function (){
-                    app.publishPlayer(70,60,color,playerName,"idle");
+                setTimeout(function (){                    
+					app.publishPlayer(70,60,color,playerName,"idle");
+					app.publishZombie(100,60,"idle")
                 },800);
             })
     });
@@ -89,6 +112,4 @@ $(function(){
             }
         }   
     });
-
-
 });

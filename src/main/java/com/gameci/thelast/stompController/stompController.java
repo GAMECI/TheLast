@@ -7,6 +7,8 @@ package com.gameci.thelast.stompController;
 
 import com.gameci.thelast.logic.Map;
 import com.gameci.thelast.logic.Warrior;
+import com.gameci.thelast.logic.Zombie;
+import com.gameci.thelast.services.GameServicesException;
 import com.gameci.thelast.services.GameServicesStub;
 import java.util.Collection;
 import java.util.Random;
@@ -28,6 +30,7 @@ public class stompController {
     
     private GameServicesStub gss = new  GameServicesStub();
     private Warrior warrior;
+    private Zombie zombie;
     private int idGame;
     
     
@@ -51,8 +54,27 @@ public class stompController {
         msgt.convertAndSend("/topic/player."+idGame,warrior);
     }
     
-    
-    
+    @MessageMapping("/zombie.{idGame}")
+    public void handleZombieEvent(Zombie zombie,@DestinationVariable int idGame) throws GameServicesException{
+        
+        boolean first=false;
+        this.zombie=zombie;
+        this.idGame=idGame;
+        Map game=gss.getMap(idGame);
+        if(game==null){
+            gss.createNewMap(idGame);
+            game=gss.getMap(idGame);
+            first=true;
+        }
+        if(game.containsZombie(zombie.getId())){
+            updateZombie();
+        }else{
+            addNewZombie(first);
+        }        
+        System.out.println(zombie.toString());
+        msgt.convertAndSend("/topic/zombie."+idGame,zombie);
+    }
+          
     
     public void loadWarriors(int idGame, Map game){
         if(game!=null){
@@ -102,7 +124,55 @@ public class stompController {
         gss.updateWarrior(warrior, idGame);
     }
     
-         
+    
+    
+    public void updateZombie() throws GameServicesException{
+        gss.updateZombie(zombie, idGame);
+    }
+    
+     public void addNewZombie(boolean first){
+        boolean possible=false;
+        Random rm =  new Random();
+        Map game=gss.getMap(idGame);
+        int minVal =60;
+        int maxVal =200;
+        int newX=minVal;
+        int newY=minVal;
+        if(!first){
+            loadZombies(idGame,game);
+            Collection<Zombie> values = game.getZombies();
+                synchronized(values){
+                    while(!possible){
+                        boolean breakLoop=false;
+                        newX=rm.nextInt(maxVal)+minVal;
+                        newY=rm.nextInt(maxVal)+minVal;
+                        for(Zombie i:values){
+                            if(i.getPosx()==newX && i.getPosy()==newY){
+                                breakLoop=true;
+                                break;
+                            }        
+                        }
+                        if(!breakLoop)
+                            possible=true;
+                    }
+                }
+                zombie.setPosx(newX);
+                zombie.setPosy(newY);
+                first=true;
+        }
+        gss.addNewZombieToMap(zombie, idGame);
+    }
+    
+    public void loadZombies(int idGame, Map game){
+        if(game!=null){
+            Collection<Zombie> values = game.getZombies();
+            synchronized(values){
+                for(Zombie i: game.getZombies()){
+                    msgt.convertAndSend("/topic/zombie."+idGame,i);
+                }
+            }
+        }
+    }
 }
 
 
