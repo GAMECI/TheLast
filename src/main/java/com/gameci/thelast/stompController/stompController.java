@@ -137,8 +137,8 @@ public class stompController {
         int minVal =60;
         int maxVal =200;
         int newX=minVal;
-        int newY=minVal;
-        if(!first){
+        int newY=minVal;                
+        if(!first){            
             loadZombies(idGame,game);
             Collection<Zombie> values = game.getZombies();
                 synchronized(values){
@@ -146,7 +146,7 @@ public class stompController {
                         boolean breakLoop=false;
                         newX=rm.nextInt(maxVal)+minVal;
                         newY=rm.nextInt(maxVal)+minVal;
-                        for(Zombie i:values){
+                        for(Zombie i: values){
                             if(i.getPosx()==newX && i.getPosy()==newY){
                                 breakLoop=true;
                                 break;

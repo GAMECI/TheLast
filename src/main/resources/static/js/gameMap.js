@@ -51,10 +51,10 @@ $(function(){
 	//Zombie		
 	
 	zombieAnimation["idle"] = new $.gameQuery.Animation({imageURL: "./js/zombie/imagen.png"});
-	zombieAnimation["up"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});
-    zombieAnimation["down"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});
-    zombieAnimation["left"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});
-    zombieAnimation["right"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});
+	zombieAnimation["up"] = new $.gameQuery.Animation({imageURL: "./js/zombie/zombieUp.png"});
+    zombieAnimation["down"] = new $.gameQuery.Animation({imageURL: "./js/zombie/zombieDown.png"});
+    zombieAnimation["left"] = new $.gameQuery.Animation({imageURL: "./js/zombie/zombieLeft.png"});
+    zombieAnimation["right"] = new $.gameQuery.Animation({imageURL: "./js/zombie/zombieRight.png"});
 	
 
     //Initialize the game

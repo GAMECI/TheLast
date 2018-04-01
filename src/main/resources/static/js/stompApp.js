@@ -7,7 +7,7 @@ var app = (function () {
 
     var stompClient = null;
     var idGame=0;
-	var numZombie=0;
+	var numZombie;
 
     class Warrior{
         constructor(name,healt,color,score,x,y,status){
@@ -50,10 +50,7 @@ var app = (function () {
                 var jsonEvent = JSON.parse(event.body);				
                 addZombie(jsonEvent);
 				
-            });
-			
-			
-			
+            });									
             connected=true;
         });
 
@@ -65,9 +62,7 @@ var app = (function () {
 
         init: function (idG) {
             //websocket connection
-            connectAndSubscribe(idG);
-            
-            
+            connectAndSubscribe(idG);			                        
         },
         
         publishPlayer: function(posx,posy,color,name,status){
@@ -83,14 +78,24 @@ var app = (function () {
         },
 				
 		publishZombie: function(posx,posy,status){			
-			numZombie+=1;
+			numZombie=1;
             if(stompClient != null){
                 var healt=100;                
                 var x=posx;
                 var y=posy;                
 				zombie = new Zombie(numZombie, healt,posx,posy,status);				
                 stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombie));								
-            }            
+            }										
+        },
+		
+		updateZombie: function(posx,posy,status){
+            if(stompClient != null){
+                zombie.x=posx;
+                zombie.y=posy;
+                zombie.status=status;
+                stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombie));
+            }
+            
         },
         
         updatePlayer: function(posx,posy,status){
