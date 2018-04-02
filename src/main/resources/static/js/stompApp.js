@@ -1,13 +1,14 @@
 var connected=false;
 var warrior;
 var zombie;
+var zombiesList = new Array();
 
 var app = (function () {
 
 
     var stompClient = null;
     var idGame=0;
-	var numZombie;
+	
 
     class Warrior{
         constructor(name,healt,color,score,x,y,status){
@@ -77,28 +78,44 @@ var app = (function () {
             
         },
 				
-		publishZombie: function(posx,posy,status){			
-			numZombie=1;
+		publishZombie: function(idZom, posx,posy,status){						
             if(stompClient != null){
                 var healt=100;                
                 var x=posx;
-                var y=posy;                
-				zombie = new Zombie(numZombie, healt,posx,posy,status);				
+                var y=posy;           
+				var id=idZom;	
+				zombie = new Zombie(warrior.name + id, healt,posx,posy,status);				
+				zombiesList.push(zombie);
                 stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombie));								
             }										
         },
 		
-		updateZombie: function(posx,posy,status){
-            if(stompClient != null){
-                zombie.x=posx;
-                zombie.y=posy;
-                zombie.status=status;
-                stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombie));
-            }
-            
+		updateZombie: function(){
+            if(stompClient != null){    
+				
+				/**var x=zombiesList[0].posx +10;
+				var y=zombiesList[0].posy;		
+				zombiesList[0].posx= x;
+				zombiesList[0].posy= y;										
+				stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombiesList[0])); 						
+				
+				var x=zombiesList[1].posx -10;
+				var y=zombiesList[1].posy;		
+				zombiesList[1].posx= x;
+				zombiesList[1].posy= y;										
+				stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombiesList[1])); 						
+				
+				var x=zombiesList[2].posx;
+				var y=zombiesList[2].posy-10;		
+				zombiesList[2].posx= x;
+				zombiesList[2].posy= y;										**/
+				stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombie)); 						
+				
+			}																			                
+                        
         },
         
-        updatePlayer: function(posx,posy,status){
+        updatePlayer: function(posx,posy,status){			
             if(stompClient != null){
                 warrior.x=posx;
                 warrior.y=posy;

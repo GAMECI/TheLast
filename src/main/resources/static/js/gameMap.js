@@ -4,6 +4,7 @@ var PLAYGROUND_WIDTH = 2000;
 var playerName;
 var playerAnimation= new Array();
 var alReady=false;
+var alReadyZombie=false;
 
 var zombieAnimation= new Array();
 
@@ -26,7 +27,7 @@ var addZombie= function(event){
     }else{        		
 		$("#zombies").addSprite(event.id,{width:65,height:70,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
     }    
-    alReady=true;
+    alReadyZombie=true;
 };
 
 
@@ -76,13 +77,15 @@ $(function(){
                 var ctrl=document.selectorColor.radio;
                 for(i=0;i<ctrl.length;i++){
                     if(ctrl[i].checked){
-			var color = ctrl[i].value;
+						var color = ctrl[i].value;
                     }   
                 }
                 $("#index").remove();
                 setTimeout(function (){                    
 					app.publishPlayer(70,60,color,playerName,"idle");
-					app.publishZombie(100,60,"idle")
+					for(i=0; i<3;i++){						
+						app.publishZombie(i,100,100,"idle")
+					}
                 },800);
             })
     });
@@ -94,22 +97,24 @@ $(function(){
             var playerposy = $("#"+playerName).y();
             switch(e.keyCode){
                 case 32: //this is shoot (space)
-                    //shoot missile here
-		
+                    //shoot missile here		
                     break;
                 case 37: //this is left! (left arrow)
-                    app.updatePlayer(playerposx-10,playerposy,"left");
+                    app.updatePlayer(playerposx-10,playerposy,"left");					
                     break;
                 case 38: //this is up! (up arrow)
-                    app.updatePlayer(playerposx,playerposy-10,"up");
+                    app.updatePlayer(playerposx,playerposy-10,"up");					
                     break;
                 case 39: //this is right (right arrow)
-                    app.updatePlayer(playerposx+10,playerposy,"right");
+                    app.updatePlayer(playerposx+10,playerposy,"right");					
                     break;
                 case 40: //this is down! (down arrow)
-                    app.updatePlayer(playerposx,playerposy+10,"down");                    
+                    app.updatePlayer(playerposx,playerposy+10,"down");                    					
                     break;
-            }
-        }   
+            }									
+        }
+		/**if(alReadyZombie){
+			app.updateZombie();			
+		}**/
     });
 });
