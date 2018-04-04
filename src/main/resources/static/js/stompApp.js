@@ -60,7 +60,16 @@ var app = (function () {
             }
             
         },
-        
+        playerLookUp : function(){
+            return warrior.status;
+        },
+        damage : function(){
+                this.healt-=25;
+                if (this.healt == 0){
+                    return true;
+		}
+                return false;
+        },        
         updatePlayer: function(posx,posy,status){
             if(stompClient != null){
                 warrior.x=posx;
