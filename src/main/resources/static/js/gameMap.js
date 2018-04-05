@@ -31,10 +31,10 @@ $(function () {
     var healthBarB = new $.gQ.Animation({imageURL:"./js/player/lifeBarB.png"});         
     var healthBarG = new $.gQ.Animation({imageURL:"./js/player/lifeBarG.png"});         
     var healthBarR = new $.gQ.Animation({imageURL:"./js/player/lifeBarR.png"});     
-    bullets["bulletU"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletU.jpeg"});     
-    bullets["bulletD"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletD.jpeg"});     
-    bullets["bulletL"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletL.jpeg"});                 
-    bullets["bulletR"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletR.jpeg"});     
+    bullets["bulletU"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletU.png"});     
+    bullets["bulletD"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletD.png"});     
+    bullets["bulletL"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletL.png"});                 
+    bullets["bulletR"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletR.png"});     
     //Player
 
     playerAnimation["idle"] = new $.gQ.Animation({imageURL: "./js/player/survivor-idle_handgun_0.png"})
@@ -93,12 +93,12 @@ $(function () {
                 case 32: //this is shoot (space)
                     //shoot missile here
                        //funcion que hace daño y actualiza el sprite y el guerrero con el app.damage
-                    if(app.playerLookUp() == "left"){
+                    if(warrior.status == "left"){
                         $("#players").addSprite("bulletL",{width:47,height:47, animation:bullets["bulletL"], posx:playerposx,posy:playerposy});
                         //bullets.push();
-                    }else if(app.playerLookUp() == "right"){
+                    }else if(warrior.status == "right"){
                         $("#players").addSprite("bulletR",{width:47,height:47, animation:bullets["bulletR"], posx:playerposx,posy:playerposy});
-                    }else if(app.playerLookUp() == "up"){
+                    }else if(warrior.status == "up"){
                         $("#players").addSprite("bulletU",{width:47,height:47, animation:bullets["bulletU"], posx:playerposx,posy:playerposy});
                     }else{
                         $("#players").addSprite("bulletD",{width:47,height:47, animation:bullets["bulletD"], posx:playerposx,posy:playerposy});
