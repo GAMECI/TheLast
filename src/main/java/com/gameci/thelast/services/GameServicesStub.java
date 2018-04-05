@@ -14,55 +14,59 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author andres
  */
 public class GameServicesStub implements GameServices {
-    private ConcurrentHashMap<Integer,Map> games;
+
+    private ConcurrentHashMap<Integer, Map> games;
     private GameServicesStub gss;
-    
-    public GameServicesStub(){
+
+    public GameServicesStub() {
         games = new ConcurrentHashMap<>();
-    }
-    @Override
-    public void createNewMap(int idGame) {
-        if(!games.containsKey(idGame))
-            games.put(idGame, new Map(idGame));
     }
 
     @Override
-    public void addNewWarriorToMap(Warrior warrior, int idGame) {
-        if(games.containsKey(idGame)){
-            Map actualMap=games.get(idGame);
-            if(!actualMap.containsWarrior(warrior.getName()))
+    public void createNewMap(int idGame) {
+        if (!games.containsKey(idGame)) {
+            games.put(idGame, new Map(idGame));
+        }
+    }
+
+    @Override
+    public void addNewWarriorToMap(Warrior warrior, int idGame) throws GameServicesException {
+        if (games.containsKey(idGame)) {
+            Map actualMap = games.get(idGame);
+            if (!actualMap.containsWarrior(warrior.getName())) {
                 games.get(idGame).addWarrior(warrior);
-            else{
-                //crear excepcion
+            } else {
+                System.out.println("estaaaes" + warrior.getName());
+                throw new GameServicesException("The player's name already exists in the same game");
             }
         }
-           
+
     }
-    
+
     @Override
-    public void updateWarrior(Warrior warrior,int idGame){
-        if(games.containsKey(idGame)){
-            Map actualMap=games.get(idGame);
-            if(actualMap.containsWarrior(warrior.getName())){
+    public void updateWarrior(Warrior warrior, int idGame) throws GameServicesException {
+        if (games.containsKey(idGame)) {
+            Map actualMap = games.get(idGame);
+            if (actualMap.containsWarrior(warrior.getName())) {
                 actualMap.getWarrior(warrior.getName()).setHealt(warrior.getHealt());
                 actualMap.getWarrior(warrior.getName()).setScore(warrior.getScore());
                 actualMap.getWarrior(warrior.getName()).setX(warrior.getX());
                 actualMap.getWarrior(warrior.getName()).setY(warrior.getY());
                 actualMap.getWarrior(warrior.getName()).setStatus(warrior.getStatus());
-            }   
-            else{
-                //crear excepcion
+            } else {
+                throw new GameServicesException("The player's name already exists in the same game");
             }
         }
     }
 
     @Override
     public Map getMap(int idGame) {
-        Map game=null;
-        if(games.containsKey(idGame))
+        Map game = null;
+        if (games.containsKey(idGame)) {
             game = games.get(idGame);
+        }
         return game;
-        
+
     }
-    
+
 }

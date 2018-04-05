@@ -10,13 +10,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 /**
- *
+ *Map Class, this class contains logic  of the game
  * @author andres
  */
 public class Map {
+    //Warriors into  the Map
     ConcurrentHashMap<String,Warrior>  warriors;
     private int idGame;
     
@@ -24,7 +26,9 @@ public class Map {
         this.idGame=idGame;
         warriors= new ConcurrentHashMap<String,Warrior>();
     }
-    
+    /*
+    *
+    */
     public void addWarrior(Warrior warrior){
         if(!warriors.containsKey(warrior.getName()))
             warriors.put(warrior.getName(),warrior);

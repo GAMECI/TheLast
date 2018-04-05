@@ -7,6 +7,7 @@ package com.gameci.thelast.stompController;
 
 import com.gameci.thelast.logic.Map;
 import com.gameci.thelast.logic.Warrior;
+import com.gameci.thelast.services.GameServicesException;
 import com.gameci.thelast.services.GameServicesStub;
 import java.util.Collection;
 import java.util.Random;
@@ -22,86 +23,90 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 public class stompController {
+
     @Autowired
     SimpMessagingTemplate msgt;
-    
-    private GameServicesStub gss = new  GameServicesStub();
-    private Warrior warrior;
-    private int idGame;
-    
-    
+
+    private GameServicesStub gss = new GameServicesStub();
+
     @MessageMapping("/player.{idGame}")
-    public void handlePlayerEvent(Warrior warrior,@DestinationVariable int idGame){
-        boolean first=false;
-        this.warrior=warrior;
-        this.idGame=idGame;
-        Map game=gss.getMap(idGame);
-        if(game==null){
-            gss.createNewMap(idGame);
-            game=gss.getMap(idGame);
-            first=true;
+    public void handlePlayerEvent(Warrior warrior, @DestinationVariable int idGame) throws GameServicesException {
+        boolean first = false;
+        synchronized (gss) {
+            Map game = gss.getMap(idGame);
+            if (game == null) {
+                System.out.println(game + warrior.getName());
+                gss.createNewMap(idGame);
+                game = gss.getMap(idGame);
+                first = true;
+
+            }
         }
-        if(game.containsWarrior(warrior.getName())){
-            updateWarrior();
-        }else{
-            addNewWarrior(first);
-        }        
-        System.out.println(warrior.toString());
-        msgt.convertAndSend("/topic/player."+idGame,warrior);
+        try {
+            if (warrior.getStatus().equals("idle")) {
+                synchronized (gss) {
+                    addNewWarrior(first,warrior,idGame);
+                }
+            } else {
+                updateWarrior(warrior,idGame);
+            }
+
+            System.out.println(warrior.toString());
+            msgt.convertAndSend("/topic/player." + idGame, warrior);
+        } catch (GameServicesException e) {
+            //msgt.convertAndSend("/topic/player." + idGame,"{\"ERROR\":\""+e.getMessage()+"\"}");
+        }
     }
-    
-    
-    
-    
-    public void loadWarriors(int idGame, Map game){
-        if(game!=null){
+
+    public void loadWarriors(int idGame, Map game) {
+        if (game != null) {
             Collection<Warrior> values = game.getWarriors();
-            synchronized(values){
-                for(Warrior i:game.getWarriors()){
-                    msgt.convertAndSend("/topic/player."+idGame,i);
+            synchronized (gss) {
+                for (Warrior i : game.getWarriors()) {
+                    msgt.convertAndSend("/topic/player." + idGame, i);
                 }
             }
         }
     }
-    
-    public void addNewWarrior(boolean first){
-        boolean possible=false;
-        Random rm =  new Random();
-        Map game=gss.getMap(idGame);
-        int minVal =60;
-        int maxVal =200;
-        int newX=minVal;
-        int newY=minVal;
-        if(!first){
-            loadWarriors(idGame,game);
-            Collection<Warrior> values = game.getWarriors();
-                synchronized(values){
-                    while(!possible){
-                        boolean breakLoop=false;
-                        newX=rm.nextInt(maxVal)+minVal;
-                        newY=rm.nextInt(maxVal)+minVal;
-                        for(Warrior i:values){
-                            if(i.getX()==newX && i.getY()==newY){
-                                breakLoop=true;
-                                break;
-                            }        
-                        }
-                        if(!breakLoop)
-                            possible=true;
+
+    public void addNewWarrior(boolean first,Warrior warrior,int idGame) throws GameServicesException {
+        boolean possible = false;
+        Random rm = new Random();
+        Map game = gss.getMap(idGame);
+        int minVal = 60;
+        int maxVal = 200;
+        int newX = minVal;
+        int newY = minVal;
+        if (!first) {
+            loadWarriors(idGame, game);
+            while (!possible) {
+                boolean breakLoop = false;
+                newX = rm.nextInt(maxVal) + minVal;
+                newY = rm.nextInt(maxVal) + minVal;
+
+                Collection<Warrior> values = game.getWarriors();
+                for (Warrior i : values) {
+                    if (i.getX() == newX && i.getY() == newY) {
+                        breakLoop = true;
+                        break;
                     }
                 }
-                warrior.setX(newX);
-                warrior.setY(newY);
-                first=true;
+
+                if (!breakLoop) {
+                    possible = true;
+                }
+            }
+
+            warrior.setX(newX);
+            warrior.setY(newY);
+            first = true;
         }
+
         gss.addNewWarriorToMap(warrior, idGame);
     }
-    
-    public void updateWarrior(){
+
+    public void updateWarrior(Warrior warrior,int idGame) throws GameServicesException {
         gss.updateWarrior(warrior, idGame);
     }
-    
-         
+
 }
-
-
