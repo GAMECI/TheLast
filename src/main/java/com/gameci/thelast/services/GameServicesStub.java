@@ -58,7 +58,6 @@ public class GameServicesStub implements GameServices {
             }
         }
     }
-
     @Override
     public Map getMap(int idGame) {
         Map game = null;
