@@ -7,7 +7,7 @@
  - Daniel Felipe Moreno D'Aleman
  - David Felipe Vaca Santana
 
-- **Enlace Heroku:**
+**Enlace Heroku:**
 
 #### **Descripción del proyecto:**
 > *Este proyecto tiene como enfoque brindar al usuario entretenimiento, donde el usuario se sienta cómodo en un juego que le puede brindar experiencia multijugador e individual. THE LAST esta basado en el juego Boxhead, se generó un nuevo tipo de estrategia el cual le permite al usuario competir con sus amigos o con cualquier personas de forma online generando un ambiente competitivo.*
@@ -25,7 +25,9 @@
  que se encuentre en la partida.
 ![](Juego.PNG)
 
->Al estar dentro de la partida, se podrá mover al jugador con las flechas del teclado en cualquier dirección
+>Al estar dentro de la partida, se podrá mover al jugador con las flechas del teclado en cualquier dirección,
+ Se puede disparar con la tecla espacio. Ademas se puede ver la barra de vida junto con el color que se escogio
+ inicialmente, 
 
 
 - **Enlace Trello:** https://trello.com/b/xlSrf97p/arsw-2018-1-thelast-historias
