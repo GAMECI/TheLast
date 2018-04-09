@@ -9,6 +9,7 @@ Description: Design register crazy!
 @import url(https://meyerweb.com/eric/tools/css/reset/reset.css);
 
 body {
+        /*position: fixed;*/
 	background: url("../images/8.jpg")0px 0px no-repeat;
 	background-size:cover;
 	background-attachment: fixed;	

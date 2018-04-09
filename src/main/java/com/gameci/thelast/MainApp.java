@@ -1,4 +1,4 @@
-package com.gameci.thelast1;
+package com.gameci.thelast;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

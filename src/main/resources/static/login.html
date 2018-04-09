@@ -7,58 +7,56 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>The Last Login</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	 
-    <script src="/js/controllerLogin.js"></script>
-    <script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
-    <script language="JavaScript" type="text/javascript" src="js/jquery.gamequery.js"></script>
-    <script language="JavaScript" type="text/javascript" src="js/gameMap.js"></script>
-    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-    <script src="js/stompApp.js"></script>
-    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="/css/combo.css" rel="stylesheet" type="text/css" media="all" />
-</head>
+    <head>
+        <title>The Last Login</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
+        <script language="JavaScript" type="text/javascript" src="js/jquery.gamequery.js"></script>
+        <script language="JavaScript" type="text/javascript" src="js/gameMap.js"></script>
+        <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+        <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+        <script src="js/stompApp.js"></script>
+        <link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="/css/combo.css" rel="stylesheet" type="text/css" media="all" />
+    </head>
 
-<body onload="app.init()">
-	<p class="texto">THE LAST</p>
-	<div id="playground">
-	<div id="index" class="Registro" >
-		<span class="fontawesome-user"></span>
-		<input id="idName" name="idName" type="text" required placeholder="User name" autocomplete="off"><br/><br/>
-		
-		<span class="fontawesome-user"></span>
-		<input id="idGame" name="idGame" type="number" required placeholder="Id game" autocomplete="off"><br/><br/>		
-		
-		<form name = "selectorColor">
-			<label class="container">
-			  <font color = "blue">Blue</font>
-			  <input type="radio" name="radio" value = "blue">
-			  <span class="checkmark"></span>
-			</label>
-			<label class="container">
-			  <font color = "red">Red</font>
-			  <input type="radio" name="radio" value = "red">
-			  <span class="checkmark"></span>
-			</label>
-			<label class="container">
-			  <font color = "green">Green</font>
-			  <input type="radio" name="radio" value = "green">
-			  <span class="checkmark"></span>
-			</label>
-			<label class="container">
-			  <font color = "yellow">Yellow</font>
-			  <input type="radio" name="radio" value = "yellow">
-			  <span class="checkmark"></span>
-			</label><br/>
-		</form>
-		
-		<input id="start" type="submit" value="Play" onclick="dateLogin(document.selectorColor.radio)">
-     </div>
-     </div>
-</body>
+    <body>
+        <p class="texto">THE LAST</p>
+        <div id="playground" align="center">
+            <div id="index" class="Registro" >
+                <span class="fontawesome-user"></span>
+                <input id="idName" name="idName" type="text" required placeholder="User name" autocomplete="off"><br/><br/>
+
+                <span class="fontawesome-user"></span>
+                <input id="idGame" name="idGame" type="number" required placeholder="Id game" autocomplete="off"><br/><br/>		
+
+                <form name = "selectorColor">
+                    <label class="container">
+                        <font color = "blue">Blue</font>
+                        <input type="radio" name="radio" value = "blue">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">
+                        <font color = "red">Red</font>
+                        <input type="radio" name="radio" value = "red">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">
+                        <font color = "green">Green</font>
+                        <input type="radio" name="radio" value = "green">
+                        <span class="checkmark"></span>
+                    </label>
+                    <label class="container">
+                        <font color = "yellow">Yellow</font>
+                        <input type="radio" name="radio" value = "yellow">
+                        <span class="checkmark"></span>
+                    </label><br/>
+                </form>
+
+                <input id="start" type="submit" value="Play" >
+            </div>
+        </div>
+    </body>
 
 </html>
