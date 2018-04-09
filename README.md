@@ -12,15 +12,18 @@
 
 > **Indicaciones Básicas de uso**
 >  Para empezar, el registro cuenta con 3 partes importantes:
-  - User name: Nombre con el cual el usuario se va a identificar en la pantalla.
-  - Id game: Número de partida a la cual se quiere unir.
-  - Selector de color: Color con el cual se quiere identificar.
+>  - User name: Nombre con el cual el usuario se va a identificar en la pantalla.
+>  - Id game: Número de partida a la cual se quiere unir.
+>  - Selector de color: Color con el cual se quiere identificar.
 > Al dar *click* en el Botón *PLAY* el juego va a empezar, pasando al tablero de juego.
-![](Incio.PNG)
+![](Inicio.PNG)
 
 >Luego de oprimir *click* se va apreciar el tablero de juegom junto con el player, y 3 zombies generados, por cada jugador
  que se encuentre en la partida.
 ![](Juego.PNG)
+
+>Al estar dentro de la partida, se podrá mover al jugador con las flechas del teclado en cualquier dirección
+
 
 - **Enlace Trello:** https://trello.com/b/xlSrf97p/arsw-2018-1-thelast-historias
 - **Circle.CI:**
