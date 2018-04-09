@@ -34,4 +34,4 @@
 
 - **Codacy:** [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c42353620eed40daaf4102f82214411e)](https://app.codacy.com/app/danielDaleman/TheLast/dashboard)
 
--**Enlace Heroku:** https://thelastbygameeci.herokuapp.com/login.html
+- **Enlace Heroku:** https://thelastbygameeci.herokuapp.com/login.html
