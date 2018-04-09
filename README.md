@@ -26,5 +26,5 @@
 
 
 - **Enlace Trello:** https://trello.com/b/xlSrf97p/arsw-2018-1-thelast-historias
-- **Circle.CI:**
-- **Codacy:**
+- **Circle.CI:** 
+- **Codacy:** [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c42353620eed40daaf4102f82214411e)](https://app.codacy.com/app/danielDaleman/TheLast/dashboard)
