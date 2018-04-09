@@ -2,24 +2,67 @@
 var PLAYGROUND_HEIGHT = 2000;
 var PLAYGROUND_WIDTH = 2000;
 var BULLET_SPEED =  10;
+var REFRESH_RATE = 15;
+var healts = new Array();
 var bullets = new Array();
 var playerName;
 var playerAnimation = new Array();
 var alReady = false;
+var gameOver = false;
+var bulletCounter = 0;
+var playersNames = new Array();
+var warriors = new Array();
 
 
 var addPlayer = function (event) {
     if ($("#" + event.name).val() != undefined)
         $("#" + event.name).remove();
+        
     if (event.status == "up" || event.status == "down") {
         $("#players").addSprite(event.name, {width: 39, height: 53, animation: playerAnimation[event.status], posx: event.x, posy: event.y});
     } else {
         $("#players").addSprite(event.name, {width: 53, height: 39, animation: playerAnimation[event.status], posx: event.x, posy: event.y});
     }
-
+    playersNames.push(event.name);
     alReady = true;
 };
 
+var updateHealth = function(war){
+        if(warrior.healt == 75){
+            if(warrior.color == "blue"){
+                $("#healthBar").setAnimation(healts["healthBar75B"]);
+            }else if(warrior.color=="green"){
+                $("#healthBar").setAnimation(healts["healthBar75G"]);
+            }else if(warrior.color =="red"){
+                $("#healthBar").setAnimation(healts["healthBar75R"]);
+            }else if(warrior.color =="yellow"){
+                $("#healthBar").setAnimation(healts["healthBar75Y"]);
+            }
+
+        }else if(warrior.healt == 50){
+            if(warrior.color == "blue"){
+                $("#healthBar").setAnimation(healts["healthBar50B"]);
+            }else if(warrior.color=="green"){
+                $("#healthBar").setAnimation(healts["healthBar50G"]);
+            }else if(warrior.color =="red"){
+                $("#healthBar").setAnimation(healts["healthBar50R"]);
+            }else if(warrior.color =="yellow"){
+                $("#healthBar").setAnimation(healts["healthBar50Y"]);
+            }
+        }else if(warrior.healt == 25){
+            if(warrior.color == "blue"){
+                $("#healthBar").setAnimation(healts["healthBar25B"]);
+            }else if(warrior.color=="green"){
+                $("#healthBar").setAnimation(healts["healthBar25G"]);
+            }else if(warrior.color =="red"){
+                $("#healthBar").setAnimation(healts["healthBar25R"]);
+            }else if(warrior.color =="yellow"){
+                $("#healthBar").setAnimation(healts["healthBar25Y"]);
+            }
+        }else{
+            
+        }
+};
 $(function () {
 
     //Animation declaration
@@ -27,10 +70,23 @@ $(function () {
     //Background Map
 
     var background3 = new $.gQ.Animation({imageURL:"./js/bg/background.png"});
-    var healthBarY = new $.gQ.Animation({imageURL:"./js/player/lifeBarY.png"});         
-    var healthBarB = new $.gQ.Animation({imageURL:"./js/player/lifeBarB.png"});         
-    var healthBarG = new $.gQ.Animation({imageURL:"./js/player/lifeBarG.png"});         
-    var healthBarR = new $.gQ.Animation({imageURL:"./js/player/lifeBarR.png"});     
+    healts["healthBarY"] = new $.gQ.Animation({imageURL:"./js/player/lifeBarY.png"});         
+    healts["healthBarB"] = new $.gQ.Animation({imageURL:"./js/player/lifeBarB.png"});         
+    healts["healthBarG"] = new $.gQ.Animation({imageURL:"./js/player/lifeBarG.png"});         
+    healts["healthBarR"] = new $.gQ.Animation({imageURL:"./js/player/lifeBarR.png"}); 
+    healts["healthBar75Y"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar75Y.png"});         
+    healts["healthBar75B"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar75B.png"});         
+    healts["healthBar75G"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar75G.png"});         
+    healts["healthBar75R"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar75R.png"});
+    healts["healthBar50Y"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar50Y.png"});         
+    healts["healthBar50B"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar50B.png"});         
+    healts["healthBar50G"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar50G.png"});         
+    healts["healthBar50R"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar50R.png"});
+    healts["healthBar25Y"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar25Y.png"});         
+    healts["healthBar25B"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar25B.png"});         
+    healts["healthBar25G"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar25G.png"});         
+    healts["healthBar25R"] = new $.gQ.Animation({imageURL:"./js/player/lifeBar25R.png"});
+    //bullets
     bullets["bulletU"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletU.png"});     
     bullets["bulletD"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletD.png"});     
     bullets["bulletL"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletL.png"});                 
@@ -47,16 +103,57 @@ $(function () {
     $("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH})
             .addGroup("background", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
             .addGroup("players", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
-            .addGroup("zoombies", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT});
+            .addGroup("zoombies", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
+            .addGroup("bullets",{width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end();
 
     //Intialize the background
 
 
     $("#background").addSprite("background3", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT, animation: background3});
 
+    $.playground().registerCallback(function(){
+        if(!gameOver){
+            $(".playerBullets").each(function(){
+					var posx = $(this).x();
+					if(posx > PLAYGROUND_WIDTH){
+						$(this).remove();
+						return;
+					}
+                                        if(warrior.status =="left"){
+                                            $(this).x(BULLET_SPEED*-1,true);
+                                        }else if(warrior.status =="right"){
+                                            $(this).x(BULLET_SPEED,true);
+                                        }else if(warrior.status =="up"){
+                                            $(this).y(BULLET_SPEED*-1,true);
+                                        }else{
+                                            $(this).y(BULLET_SPEED,true);
+                                        }
+
+                                        
+					//$(this).x(BULLET_SPEED, true);
+					//Test for collisions
+					var collided ;
+                                        for (i = 0; i < playersNames.length; i++ ){
+                                            collided = $(this).collision("#players,#"+playersNames[i]); 
+                                            if(collided.length > 0){
+                                                for(j=0; j < warriors.length; j++){
+                                                    if(warriors[j].name == playersNames[i]){
+                                                        app.updateSpecificPlayer(warriors[j].x,warriors[j].y, warriors[j].status, -25, j );
+                                                        updateHealth(warriors[j]);
+                                                        $(this).remove();
+                                                    }
+                                                }
+                                                
+                                            }
+                                        }
+                                        
+            });
+        }
 
 
+    }, REFRESH_RATE);
 
+    
     $("#start").click(function () {
         playerName = $('#idName').val();
         $.playground().startGame(function () {
@@ -71,19 +168,25 @@ $(function () {
             setTimeout(function (){
                 app.publishPlayer(70,60,color,playerName,"idle");
                 if(color == "blue"){
-                    $("#players").addSprite("healthBarB",{width:560, height:138, animation:healthBarB, posx:50,posy:0});
+                    $("#players").addSprite("healthBar",{width:560, height:138, animation:healts["healthBarB"], posx:50,posy:0});
                 }else if(color=="green"){
-                    $("#players").addSprite("healthBarG",{width:560, height:138, animation:healthBarG, posx:50,posy:0});
+                    $("#players").addSprite("healthBar",{width:560, height:138, animation:healts["healthBarG"], posx:50,posy:0});
                 }else if(color =="red"){
-                    $("#players").addSprite("healthBarR",{width:560, height:138, animation:healthBarR, posx:50,posy:0});
+                    $("#players").addSprite("healthBar",{width:560, height:138, animation:healts["healthBarR"], posx:50,posy:0});
                 }else if(color =="yellow"){
-                    $("#players").addSprite("healthBarY",{width:560, height:138, animation:healthBarY, posx:50,posy:0});
+                    $("#players").addSprite("healthBar",{width:560, height:138, animation:healts["healthBarY"], posx:50,posy:0});
                 }
            },800);
         });
     });
-  
     
+
+
+
+  
+ 
+
+
 
     $(document).keydown(function(e){
         if(alReady){
@@ -91,30 +194,34 @@ $(function () {
             var playerposy = $("#"+playerName).y();
             switch(e.keyCode){
                 case 32: //this is shoot (space)
-                    //shoot missile here
-                       //funcion que hace daño y actualiza el sprite y el guerrero con el app.damage
-                    if(warrior.status == "left"){
-                        $("#players").addSprite("bulletL",{width:47,height:47, animation:bullets["bulletL"], posx:playerposx,posy:playerposy});
-                        //bullets.push();
+                    bulletCounter = (bulletCounter + 1) % 100000;
+                    var name = "playerBullet_"+bulletCounter;                    
+                    if(warrior.status == "left"){                        
+                        $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletL"], posx:playerposx-50,posy:playerposy});
+                        $("#"+name).addClass("playerBullets");
                     }else if(warrior.status == "right"){
-                        $("#players").addSprite("bulletR",{width:47,height:47, animation:bullets["bulletR"], posx:playerposx,posy:playerposy});
+                        $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletR"], posx:playerposx+60,posy:playerposy});
+                        $("#"+name).addClass("playerBullets");    
                     }else if(warrior.status == "up"){
-                        $("#players").addSprite("bulletU",{width:47,height:47, animation:bullets["bulletU"], posx:playerposx,posy:playerposy});
+                        $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletU"], posx:playerposx,posy:playerposy-50});
+                        $("#"+name).addClass("playerBullets");
                     }else{
-                        $("#players").addSprite("bulletD",{width:47,height:47, animation:bullets["bulletD"], posx:playerposx,posy:playerposy});
+                        $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletD"], posx:playerposx,posy:playerposy+50});
+                        $("#"+name).addClass("playerBullets");
                     }
                     break;
                 case 37: //this is left! (left arrow)
-                    app.updatePlayer(playerposx - 10, playerposy, "left");
+                    app.updatePlayer(playerposx - 10, playerposy, "left", warrior.healt);
+                    
                     break;
                 case 38: //this is up! (up arrow)
-                    app.updatePlayer(playerposx, playerposy - 10, "up");
+                    app.updatePlayer(playerposx, playerposy - 10, "up", warrior.healt);
                     break;
                 case 39: //this is right (right arrow)
-                    app.updatePlayer(playerposx + 10, playerposy, "right");
+                    app.updatePlayer(playerposx + 10, playerposy, "right", warrior.healt);
                     break;
                 case 40: //this is down! (down arrow)
-                    app.updatePlayer(playerposx, playerposy + 10, "down");
+                    app.updatePlayer(playerposx, playerposy + 10, "down", warrior.healt);
                     break;
             }
         }

@@ -63,6 +63,7 @@ var app = (function () {
                 var x = posx;
                 var y = posy;
                 warrior = new Warrior(name, healt, color, score, x, y, status);
+                warriors.push(warrior);
                 try{
                     stompClient.send("/app/player." + idGame, {}, JSON.stringify(warrior));
                 }catch(error){
@@ -71,12 +72,22 @@ var app = (function () {
             }
 
         },
+        updateSpecificPlayer: function (posx, posy, status,health, ubicacion) {
+            if (stompClient != null) {
+                warriors[ubicacion].x = posx;
+                warriors[ubicacion].y = posy;
+                warriors[ubicacion].status = status;
+                warriors[ubicacion].healt += health;
+                stompClient.send("/app/player." + idGame, {}, JSON.stringify(warriors[ubicacion]));
+            }
 
-        updatePlayer: function (posx, posy, status) {
+        },
+        updatePlayer: function (posx, posy, status,health) {
             if (stompClient != null) {
                 warrior.x = posx;
                 warrior.y = posy;
                 warrior.status = status;
+                warrior.healt = health;
                 stompClient.send("/app/player." + idGame, {}, JSON.stringify(warrior));
             }
 
