@@ -20,11 +20,18 @@ import java.util.concurrent.ConcurrentMap;
 public class Map {
     //Warriors into  the Map
     ConcurrentHashMap<String,Warrior>  warriors;
+    ConcurrentHashMap<Integer,SpecialObject> objects;
     private int idGame;
-    
+    long initialTime;
+    long finalTime;
+  
     public Map(int idGame){
         this.idGame=idGame;
         warriors= new ConcurrentHashMap<String,Warrior>();
+        objects= new ConcurrentHashMap<>();
+        initialTime= System.currentTimeMillis();
+        finalTime= System.currentTimeMillis();
+        
     }
     /*
     *
@@ -58,5 +65,22 @@ public class Map {
             selectedWarrior=warriors.get(name);
         }
         return selectedWarrior;
+    }
+    public void addSpecialObject(SpecialObject object){
+        if(!objects.containsKey(object.getId())){
+            objects.put(object.getId(), object);    
+        }    
+    }
+    
+    public Long getInitalTime(){
+        return initialTime;
+    }
+    
+    public Long getFinalTime(){
+        return finalTime;
+    }
+      
+    public void setFinalTime(){
+        finalTime=System.currentTimeMillis();
     }
 }

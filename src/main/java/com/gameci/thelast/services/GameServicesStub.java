@@ -6,6 +6,7 @@
 package com.gameci.thelast.services;
 
 import com.gameci.thelast.logic.Map;
+import com.gameci.thelast.logic.SpecialObject;
 import com.gameci.thelast.logic.Warrior;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -36,7 +37,7 @@ public class GameServicesStub implements GameServices {
             if (!actualMap.containsWarrior(warrior.getName())) {
                 games.get(idGame).addWarrior(warrior);
             } else {
-                System.out.println("estaaaes" + warrior.getName());
+                
                 throw new GameServicesException("The player's name already exists in the same game");
             }
         }
@@ -66,6 +67,19 @@ public class GameServicesStub implements GameServices {
         }
         return game;
 
+    }
+    @Override 
+    public void  putSpecialObjectInMap(int idGame,SpecialObject object){
+        if(games.containsKey(idGame)){
+            games.get(idGame).addSpecialObject(object);
+        }
+    }
+    
+    @Override
+    public void removeSpecialObjectToMap(int idGame,SpecialObject object){
+        if(games.containsKey(idGame)){
+            games.remove(object.getId());
+        }
     }
 
 }

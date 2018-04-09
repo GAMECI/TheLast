@@ -6,11 +6,13 @@
 package com.gameci.thelast.stompController;
 
 import com.gameci.thelast.logic.Map;
+import com.gameci.thelast.logic.SpecialObject;
 import com.gameci.thelast.logic.Warrior;
 import com.gameci.thelast.services.GameServicesException;
 import com.gameci.thelast.services.GameServicesStub;
 import java.util.Collection;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -28,6 +30,7 @@ public class stompController {
     SimpMessagingTemplate msgt;
 
     private GameServicesStub gss = new GameServicesStub();
+    private AtomicInteger objectInstance = new AtomicInteger();
 
     @MessageMapping("/player.{idGame}")
     public void handlePlayerEvent(Warrior warrior, @DestinationVariable int idGame) throws GameServicesException {
@@ -44,11 +47,11 @@ public class stompController {
         }
         try {
             if (warrior.getStatus().equals("idle")) {
-                synchronized (gss) {
-                    addNewWarrior(first,warrior,idGame);
-                }
+
+                addNewWarrior(first, warrior, idGame);
+
             } else {
-                updateWarrior(warrior,idGame);
+                updateWarrior(warrior, idGame);
             }
 
             System.out.println(warrior.toString());
@@ -69,7 +72,7 @@ public class stompController {
         }
     }
 
-    public void addNewWarrior(boolean first,Warrior warrior,int idGame) throws GameServicesException {
+    public void addNewWarrior(boolean first, Warrior warrior, int idGame) throws GameServicesException {
         boolean possible = false;
         Random rm = new Random();
         Map game = gss.getMap(idGame);
@@ -79,34 +82,66 @@ public class stompController {
         int newY = minVal;
         if (!first) {
             loadWarriors(idGame, game);
-            while (!possible) {
-                boolean breakLoop = false;
-                newX = rm.nextInt(maxVal) + minVal;
-                newY = rm.nextInt(maxVal) + minVal;
+            int[] positions = posCalculator(idGame);
 
-                Collection<Warrior> values = game.getWarriors();
-                for (Warrior i : values) {
-                    if (i.getX() == newX && i.getY() == newY) {
-                        breakLoop = true;
-                        break;
-                    }
-                }
-
-                if (!breakLoop) {
-                    possible = true;
-                }
-            }
-
-            warrior.setX(newX);
-            warrior.setY(newY);
+            warrior.setX(positions[0]);
+            warrior.setY(positions[1]);
             first = true;
         }
 
         gss.addNewWarriorToMap(warrior, idGame);
     }
 
-    public void updateWarrior(Warrior warrior,int idGame) throws GameServicesException {
+    public void updateWarrior(Warrior warrior, int idGame) throws GameServicesException {
+        addSpecialObject(idGame);
         gss.updateWarrior(warrior, idGame);
+    }
+
+    public void addSpecialObject(int idGame) {
+        double deltaTime = (System.currentTimeMillis() - gss.getMap(idGame).getInitalTime()) / 60000.0;
+        int minVal = 60;
+        int maxVal = 200;
+        Random rm = new Random();
+        int newX = minVal;
+        int newY = minVal;
+        boolean possible = false;
+        if (deltaTime >= objectInstance.get() + 1) {
+            int[] positions = posCalculator(idGame);
+            objectInstance.getAndAdd(1);
+            SpecialObject object = new SpecialObject(positions[0], positions[1], "medicine", objectInstance.get());
+            gss.putSpecialObjectInMap(idGame, object);
+            msgt.convertAndSend("/topic/object." + idGame, object);
+        }
+
+    }
+
+    public int[] posCalculator(int idGame) {
+        int[] positions = new int[2];
+        int minVal = 60;
+        int maxVal = 200;
+        Random rm = new Random();
+        positions[0] = minVal;
+        positions[1] = minVal;
+        boolean possible = false;
+        synchronized (gss) {
+            while (!possible) {
+                boolean breakLoop = false;
+                positions[0] = rm.nextInt(maxVal) + minVal;
+                positions[1] = rm.nextInt(maxVal) + minVal;
+                Map game = gss.getMap(idGame);
+                Collection<Warrior> values = game.getWarriors();
+                for (Warrior i : values) {
+                    if (i.getX() == positions[0] && i.getY() == positions[1]) {
+                        breakLoop = true;
+                        break;
+                    }
+                }
+                if (!breakLoop) {
+                    possible = true;
+                }
+            }
+        }
+        return positions;
     }
 
 }

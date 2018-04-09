@@ -5,6 +5,7 @@ var BULLET_SPEED =  10;
 var bullets = new Array();
 var playerName;
 var playerAnimation = new Array();
+var specialObject = new Array();
 var alReady = false;
 
 
@@ -19,6 +20,11 @@ var addPlayer = function (event) {
 
     alReady = true;
 };
+
+var addObject= function (event){
+    $("#specialObject").addSprite("heartUp",{width:35, height:32, animation:specialObject["moveUp"], posx: event.posx,posy:event.posy});
+    $("#specialObject").addSprite("heartDown",{width:35, height:32, animation:specialObject["moveDown"], posx:event.posx,posy:event.posy});
+}
 
 $(function () {
 
@@ -43,11 +49,16 @@ $(function () {
     playerAnimation["left"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterLeft.png"});
     playerAnimation["right"] = new $.gameQuery.Animation({imageURL: "./js/player/shooterRight.png"});
 
+    //Special Object
+    specialObject["moveUp"] = new $.gQ.Animation({imageURL:"./js/specialObject/GleefulDismalBluefintuna-max-1mb-0.png",numberOfFrame: 8, delta: 26, rate: 60, type: $.gQ.ANIMATION_VERTICAL})
+    specialObject["moveDown"] = new $.gQ.Animation({imageURL:"./js/specialObject/GleefulDismalBluefintuna-max-1mb-1.png",numberOfFrame: 8, delta: 26, rate: 60, type: $.gQ.ANIMATION_VERTICAL})
     //Initialize the game
     $("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH})
             .addGroup("background", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
             .addGroup("players", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
-            .addGroup("zoombies", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT});
+            .addGroup("zoombies", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
+            .addGroup("specialObject",{width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT})
+
 
     //Intialize the background
 

@@ -6,6 +6,7 @@
 package com.gameci.thelast.services;
 
 import com.gameci.thelast.logic.Map;
+import com.gameci.thelast.logic.SpecialObject;
 import com.gameci.thelast.logic.Warrior;
 
 /**
@@ -18,5 +19,6 @@ public interface  GameServices {
     void addNewWarriorToMap(Warrior warrior,int idGame) throws GameServicesException;
     void updateWarrior(Warrior warrior,int idGame) throws GameServicesException;
     Map getMap(int idGame)throws GameServicesException;
-   
+    void putSpecialObjectInMap(int idGame,SpecialObject object)throws GameServicesException;
+   void removeSpecialObjectToMap(int idGame, SpecialObject object) throws GameServicesException;
 }
