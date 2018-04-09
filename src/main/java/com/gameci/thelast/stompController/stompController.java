@@ -29,8 +29,7 @@ public class stompController {
     SimpMessagingTemplate msgt;
     
     private GameServicesStub gss = new  GameServicesStub();
-    private Warrior warrior;
-    private Zombie zombie;
+    private Warrior warrior;    
     private int idGame;
     
     
@@ -55,24 +54,29 @@ public class stompController {
     }
     
     @MessageMapping("/zombie.{idGame}")
-    public void handleZombieEvent(Zombie zombie,@DestinationVariable int idGame) throws GameServicesException{
-        
-        boolean first=false;
-        this.zombie=zombie;
-        this.idGame=idGame;
-        Map game=gss.getMap(idGame);
-        if(game==null){
-            gss.createNewMap(idGame);
-            game=gss.getMap(idGame);
-            first=true;
+    public void handleZombieEvent(Zombie zombie,@DestinationVariable int idGame) throws GameServicesException{        
+        boolean first=false;                
+        synchronized(gss){
+            Map game=gss.getMap(idGame);
+            if(game==null){
+                gss.createNewMap(idGame);
+                game=gss.getMap(idGame);
+                first=true;
+            }
         }
-        if(game.containsZombie(zombie.getId())){
-            updateZombie();
-        }else{
-            addNewZombie(first);
-        }        
-        System.out.println(zombie.toString());
-        msgt.convertAndSend("/topic/zombie."+idGame,zombie);
+        try{
+            if(zombie.getStatus().equals("idle")){
+                synchronized(gss){
+                    addNewZombie(first, zombie, idGame);
+                }                
+            }else{
+                updateZombie(zombie, idGame);
+            }        
+            System.out.println(zombie.toString());
+            msgt.convertAndSend("/topic/zombie."+idGame,zombie);
+        }catch(GameServicesException e){
+        
+        }
     }
           
     
@@ -126,11 +130,11 @@ public class stompController {
     
     
     
-    public void updateZombie() throws GameServicesException{
+    public void updateZombie(Zombie zombie, int idGame) throws GameServicesException{
         gss.updateZombie(zombie, idGame);
     }
     
-     public void addNewZombie(boolean first){
+    public void addNewZombie(boolean first, Zombie zombie, int idGame){
         boolean possible=false;
         Random rm =  new Random();
         Map game=gss.getMap(idGame);

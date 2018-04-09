@@ -112,9 +112,6 @@ $(function(){
                     app.updatePlayer(playerposx,playerposy+10,"down");                    					
                     break;
             }									
-        }
-		/**if(alReadyZombie){
-			app.updateZombie();			
-		}**/
+        }		
     });
 });

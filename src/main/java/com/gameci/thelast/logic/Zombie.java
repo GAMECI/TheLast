@@ -11,8 +11,8 @@ package com.gameci.thelast.logic;
  */
 public class Zombie {
     private int healt;
-    private int posx;
-    private int posy;    
+    private int xz;
+    private int yz;    
     private String id;
     private String status;
     
@@ -23,8 +23,8 @@ public class Zombie {
     public Zombie(int healt, int posx, int posy, String id, String status){
         this.id=id;
         this.healt = healt;
-        this.posx = posx;
-        this.posy = posy;    
+        this.xz = posx;
+        this.yz = posy;    
         this.status=status;
     }
 
@@ -55,23 +55,23 @@ public class Zombie {
     }
 
     public int getPosx() {
-        return posx;
+        return xz;
     }
 
     public void setPosx(int posx) {
-        this.posx = posx;
+        this.xz = posx;
     }
 
     public int getPosy() {
-        return posy;
+        return yz;
     }
 
     public void setPosy(int posy) {
-        this.posy = posy;
+        this.yz = posy;
     }
     
     public String toString(){
-        return " id= " + id +" healt= "+healt+" posx= "+posx+" posy= "+posy;
+        return " id= " + id +" healt= "+healt+" posx= "+xz+" posy= "+yz;
     }
     
     

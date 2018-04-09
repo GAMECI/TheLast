@@ -79,7 +79,7 @@ public class GameServicesStub implements GameServices {
     public void updateZombie(Zombie zombie, int idGame){        
         if(games.containsKey(idGame)){
             Map actualMap=games.get(idGame);
-            if(actualMap.containsWarrior(zombie.getId())){
+            if(actualMap.containsZombie(zombie.getId())){
                 actualMap.getZombie(zombie.getId()).setId(zombie.getId());
                 actualMap.getZombie(zombie.getId()).setHealt(zombie.getHealt());
                 actualMap.getZombie(zombie.getId()).setPosx(zombie.getPosx());
