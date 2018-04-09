@@ -10,10 +10,15 @@ package com.gameci.thelast.services;
  * @author andres
  */
 public class GameServicesException extends Exception{
+        private String error;
         public GameServicesException(String msg, Throwable cause){
             super(msg,cause);
         }
         public GameServicesException(String msg){
             super(msg);
+        }
+        
+        public String getError(){
+            return getMessage();
         }
 }
