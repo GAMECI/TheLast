@@ -7,7 +7,7 @@
  - Daniel Felipe Moreno D'Aleman
  - David Felipe Vaca Santana
 
-**Enlace Heroku:**
+
 
 #### **Descripción del proyecto:**
 > *Este proyecto tiene como enfoque brindar al usuario entretenimiento, donde el usuario se sienta cómodo en un juego que le puede brindar experiencia multijugador e individual. THE LAST esta basado en el juego Boxhead, se generó un nuevo tipo de estrategia el cual le permite al usuario competir con sus amigos o con cualquier personas de forma online generando un ambiente competitivo.*
