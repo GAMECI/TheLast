@@ -127,7 +127,7 @@ $(function () {
                 }else if(color =="yellow"){
                     $("#players").addSprite("healthBarY",{width:560, height:138, animation:healthBarY, posx:50,posy:0});
                 }
-           },800);
+           },2000);
         });
     });
   
