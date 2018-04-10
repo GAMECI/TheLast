@@ -5,6 +5,7 @@
  */
 package com.gameci.thelast.services;
 
+import com.gameci.thelast.logic.Bullet;
 import com.gameci.thelast.logic.Map;
 import com.gameci.thelast.logic.Warrior;
 
@@ -18,5 +19,7 @@ public interface  GameServices {
     void addNewWarriorToMap(Warrior warrior,int idGame) throws GameServicesException;
     void updateWarrior(Warrior warrior,int idGame) throws GameServicesException;
     Map getMap(int idGame)throws GameServicesException;
+    public void addBulletToMap(Bullet bullet, int idGame) throws GameServicesException;
+    public void updateBullet(Bullet bullet, int idGame) throws GameServicesException ;
    
 }

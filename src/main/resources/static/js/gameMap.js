@@ -119,9 +119,10 @@ $(function () {
 					if(posx > PLAYGROUND_WIDTH){
 						$(this).remove();
 						return;
-					}
-                                        for(key in bulletsD){
-                                            if(key == this.id){
+					}                                        
+                                        var conta = 0;
+                                        for(key in bulletsD){                                            
+                                            if(key === this.id){
                                                 if (bulletsD[key] == "left") {                                                       
                                                     $(this).x(BULLET_SPEED * -1, true);
                                                 } else if (bulletsD[key] == "right") {
@@ -131,8 +132,12 @@ $(function () {
                                                 } else {
                                                     $(this).y(BULLET_SPEED, true);
                                                 }
-                                            }
+                                                app.updateSpecificBullet(conta,$(this).x(), $(this).y());
+                                                
+                                            }                                               
+                                            conta++;                                            
                                         }
+                                        
                                         
                                         
 
@@ -196,17 +201,21 @@ $(function () {
                     bulletCounter = (bulletCounter + 1) % 100000;
                     var name = "playerBullet_"+bulletCounter;                    
                     if(warrior.status == "left"){                        
-                        $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletL"], posx:playerposx-50,posy:playerposy});
+                        $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletL"], posx:playerposx-50,posy:playerposy});                     
                         $("#"+name).addClass("playerBullets");
+                        app.publishBullet(name,playerposx-50,playerposy);
                     }else if(warrior.status == "right"){
                         $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletR"], posx:playerposx+60,posy:playerposy});
                         $("#"+name).addClass("playerBullets");
+                        app.publishBullet(name,playerposx+60,playerposy);
                     }else if(warrior.status == "up"){
                         $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletU"], posx:playerposx,posy:playerposy-50});
                         $("#"+name).addClass("playerBullets");
+                        app.publishBullet(name,playerposx,playerposy-50);
                     }else{
                         $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletD"], posx:playerposx,posy:playerposy+50});
                         $("#"+name).addClass("playerBullets");
+                        app.publishBullet(name,playerposx,playerposy+50);
                     }
                     bulletsD[name] = warrior.status;    
                     break;

@@ -1,5 +1,6 @@
 var connected = false;
 var warrior;
+var bullet;
 
 var app = (function () {
 
@@ -10,13 +11,20 @@ var app = (function () {
     class Warrior {
         constructor(name, healt, color, score, x, y, status) {
             this.name = name;
-            this.healt = healt;
             this.color = color;
             this.score = score;
             this.x = x;
             this.y = y;
             this.status = status;
         }
+    }
+    class Bullet{
+        constructor(id, x, y){
+            this.id = id;
+            this.x= x;
+            this.y = y;
+        }
+        
     }
 
     var connectAndSubscribe = function (idG) {
@@ -55,7 +63,30 @@ var app = (function () {
 
 
         },
+        publishBullet: function(id, posx,posy){
+            if(stompClient!= null){
+                var id = id;
+                var x = posx;
+                var y = posy;
+                bullet = new Bullet(id, x, y);
+                bullets.push(bullet);
+                try{
+                    stompClient.send("/app/bullet." + idGame, {}, JSON.stringify(bullet));
+                }catch(error){
+                    alert("errrrroor");
+                }
+            }
+            
+            
+        },
+        updateSpecificBullet: function (id,posx, posy) {
+            if (stompClient != null) {
+                bullets[id].x = posx;
+                bullets[id].y = posy;
+                stompClient.send("/app/bullet." + idGame, {}, JSON.stringify(bullets[id]));
+            }
 
+        },
         publishPlayer: function (posx, posy, color, name, status) {
             if (stompClient != null) {
                 var healt = 100;

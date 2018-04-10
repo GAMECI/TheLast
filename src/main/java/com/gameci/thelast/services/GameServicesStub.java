@@ -5,6 +5,7 @@
  */
 package com.gameci.thelast.services;
 
+import com.gameci.thelast.logic.Bullet;
 import com.gameci.thelast.logic.Map;
 import com.gameci.thelast.logic.Warrior;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,21 +29,30 @@ public class GameServicesStub implements GameServices {
             games.put(idGame, new Map(idGame));
         }
     }
-
     @Override
-    public void addNewWarriorToMap(Warrior warrior, int idGame) throws GameServicesException {
+    public void addBulletToMap(Bullet bullet, int idGame) throws GameServicesException {
         if (games.containsKey(idGame)) {
             Map actualMap = games.get(idGame);
-            if (!actualMap.containsWarrior(warrior.getName())) {
-                games.get(idGame).addWarrior(warrior);
+            if (!actualMap.containsBullet(bullet.getId())) {
+                actualMap.addBullet(bullet);
             } else {
-                System.out.println("estaaaes" + warrior.getName());
-                throw new GameServicesException("The player's name already exists in the same game");
+                throw new GameServicesException("The bullet id  already exists in the same game");
             }
         }
 
     }
-
+     @Override
+    public void updateBullet(Bullet bullet, int idGame) throws GameServicesException {
+        if (games.containsKey(idGame)) {
+            Map actualMap = games.get(idGame);
+            if (actualMap.containsBullet(bullet.getId())) {
+                actualMap.getBullet(bullet.getId()).setX(bullet.getX());
+                actualMap.getBullet(bullet.getId()).setY(bullet.getY());
+            } else {
+                throw new GameServicesException("The bullet doesn't exist in the same game");
+            }
+        }
+    }
     @Override
     public void updateWarrior(Warrior warrior, int idGame) throws GameServicesException {
         if (games.containsKey(idGame)) {
@@ -58,6 +68,21 @@ public class GameServicesStub implements GameServices {
             }
         }
     }
+    @Override
+    public void addNewWarriorToMap(Warrior warrior, int idGame) throws GameServicesException {
+        if (games.containsKey(idGame)) {
+            Map actualMap = games.get(idGame);
+            if (!actualMap.containsWarrior(warrior.getName())) {
+                games.get(idGame).addWarrior(warrior);
+            } else {
+                System.out.println("estaaaes" + warrior.getName());
+                throw new GameServicesException("The player's name already exists in the same game");
+            }
+        }
+
+    }
+
+   
     @Override
     public Map getMap(int idGame) {
         Map game = null;

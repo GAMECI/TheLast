@@ -20,11 +20,41 @@ import java.util.concurrent.ConcurrentMap;
 public class Map {
     //Warriors into  the Map
     ConcurrentHashMap<String,Warrior>  warriors;
+    ConcurrentHashMap<String,Bullet> bullets;
     private int idGame;
     
     public Map(int idGame){
         this.idGame=idGame;
         warriors= new ConcurrentHashMap<String,Warrior>();
+        bullets= new ConcurrentHashMap<String,Bullet>();
+    }
+    public void addBullet(Bullet bullet){
+        if(!bullets.containsKey(bullet.getId()))
+            bullets.put(bullet.getId(),bullet);
+    }
+    public void deleteBullet(String id){
+        if(bullets.containsKey(id))
+            bullets.remove(id);
+    }
+    public boolean containsBullet(String id){
+        boolean resp=false;
+        if(bullets.containsKey(id))
+            resp=true;
+        return resp;
+    }
+    public Collection<Bullet> getBullets(){
+        Collection<Bullet> values=null;
+        if(bullets!=null)
+            values=bullets.values();
+        return values;
+    }
+    
+    public Bullet getBullet(String id){
+        Bullet selectedBullet=null;
+        if(bullets.containsKey(id)){
+            selectedBullet=bullets.get(id);
+        }
+        return selectedBullet;
     }
     /*
     *

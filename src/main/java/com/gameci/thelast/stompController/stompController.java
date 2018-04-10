@@ -5,6 +5,7 @@
  */
 package com.gameci.thelast.stompController;
 
+import com.gameci.thelast.logic.Bullet;
 import com.gameci.thelast.logic.Map;
 import com.gameci.thelast.logic.Warrior;
 import com.gameci.thelast.services.GameServicesException;
@@ -28,7 +29,21 @@ public class stompController {
     SimpMessagingTemplate msgt;
 
     private GameServicesStub gss = new GameServicesStub();
-
+    
+    @MessageMapping("/bullet.{idGame}")
+    public void handleBullet(Bullet bullet, @DestinationVariable int idGame) throws GameServicesException{
+        try{
+            Map game = gss.getMap(idGame);
+            synchronized(gss){
+                addNewBullet(bullet, idGame);
+                msgt.convertAndSend("/topic/bullet." + idGame, bullet);
+            }
+        }catch(Exception e){
+        
+        }
+    
+    }
+    
     @MessageMapping("/player.{idGame}")
     public void handlePlayerEvent(Warrior warrior, @DestinationVariable int idGame) throws GameServicesException {
         boolean first = false;
@@ -57,12 +72,21 @@ public class stompController {
             //msgt.convertAndSend("/topic/player." + idGame,"{\"ERROR\":\""+e.getMessage()+"\"}");
         }
     }
-
+    public void loadBullets(int idGame, Map game) {
+        if (game != null) {
+            Collection<Bullet> values = game.getBullets();
+            synchronized (gss) {
+                for (Bullet i : values) {
+                    msgt.convertAndSend("/topic/bullet." + idGame, i);
+                }
+            }
+        }
+    }
     public void loadWarriors(int idGame, Map game) {
         if (game != null) {
             Collection<Warrior> values = game.getWarriors();
             synchronized (gss) {
-                for (Warrior i : game.getWarriors()) {
+                for (Warrior i : values) {
                     msgt.convertAndSend("/topic/player." + idGame, i);
                 }
             }
@@ -106,7 +130,37 @@ public class stompController {
     }
 
     public void updateWarrior(Warrior warrior,int idGame) throws GameServicesException {
-        gss.updateWarrior(warrior, idGame);
+        Map game = gss.getMap(idGame);
+        if(game!=null){
+            gss.updateWarrior(warrior, idGame);
+        }else{
+            System.out.println("No se encontro la partida");
+        }
+        
+    }
+
+    private void addNewBullet(Bullet bullet, int idGame) throws GameServicesException{
+        try{
+            Map game = gss.getMap(idGame);
+            loadBullets(idGame, game);
+            gss.addBulletToMap(bullet, idGame);
+        }catch(GameServicesException e){
+            e.toString();
+        }
+    }
+    
+    private void updateBullet(Bullet bullet, int idGame) throws GameServicesException{
+        try{
+            Map game = gss.getMap(idGame);
+            if(game!=null){
+                gss.updateBullet(bullet, idGame);
+            }else{
+                System.out.println("No se encontro la partida");
+            }
+        }catch(GameServicesException e){
+            e.toString();
+        }
+        
     }
 
 }
