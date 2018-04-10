@@ -5,6 +5,7 @@ var BULLET_SPEED =  10;
 var REFRESH_RATE = 15;
 var healts = new Array();
 var bullets = new Array();
+var bulletsD = {};
 var playerName;
 var playerAnimation = new Array();
 var alReady = false;
@@ -119,15 +120,21 @@ $(function () {
 						$(this).remove();
 						return;
 					}
-                                        if(warrior.status =="left"){
-                                            $(this).x(BULLET_SPEED*-1,true);
-                                        }else if(warrior.status =="right"){
-                                            $(this).x(BULLET_SPEED,true);
-                                        }else if(warrior.status =="up"){
-                                            $(this).y(BULLET_SPEED*-1,true);
-                                        }else{
-                                            $(this).y(BULLET_SPEED,true);
+                                        for(key in bulletsD){
+                                            if(key == this.id){
+                                                if (bulletsD[key] == "left") {                                                       
+                                                    $(this).x(BULLET_SPEED * -1, true);
+                                                } else if (bulletsD[key] == "right") {
+                                                    $(this).x(BULLET_SPEED, true);
+                                                } else if (bulletsD[key] == "up") {
+                                                    $(this).y(BULLET_SPEED * -1, true);
+                                                } else {
+                                                    $(this).y(BULLET_SPEED, true);
+                                                }
+                                            }
                                         }
+                                        
+                                        
 
                                         
 					//$(this).x(BULLET_SPEED, true);
@@ -180,14 +187,6 @@ $(function () {
         });
     });
     
-
-
-
-  
- 
-
-
-
     $(document).keydown(function(e){
         if(alReady){
             var playerposx = $("#"+playerName).x();
@@ -201,7 +200,7 @@ $(function () {
                         $("#"+name).addClass("playerBullets");
                     }else if(warrior.status == "right"){
                         $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletR"], posx:playerposx+60,posy:playerposy});
-                        $("#"+name).addClass("playerBullets");    
+                        $("#"+name).addClass("playerBullets");
                     }else if(warrior.status == "up"){
                         $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletU"], posx:playerposx,posy:playerposy-50});
                         $("#"+name).addClass("playerBullets");
@@ -209,6 +208,7 @@ $(function () {
                         $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletD"], posx:playerposx,posy:playerposy+50});
                         $("#"+name).addClass("playerBullets");
                     }
+                    bulletsD[name] = warrior.status;    
                     break;
                 case 37: //this is left! (left arrow)
                     app.updatePlayer(playerposx - 10, playerposy, "left", warrior.healt);
