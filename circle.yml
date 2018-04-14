@@ -6,10 +6,8 @@ deployment:
   staging:
     branch: master
     heroku: 
-      appname: thelast
+      appname: thelastbygameeci
       
 test:
   override:
-- "true"
-
-
+    - "true"
