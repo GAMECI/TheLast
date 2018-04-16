@@ -6,6 +6,7 @@ var app = (function () {
 
 
     var stompClient = null;
+    var stompClientB = null;
     var idGame = 0;
 
     class Warrior {
@@ -27,13 +28,27 @@ var app = (function () {
         
     }
 
+    var connectAndSubscribeB = function(idG){
+        idGame = idG;
+        console.info('Connecting to WS...');
+        var socket = new SockJS('/stompendpoint');
+        stompClientB = Stomp.over(socket);
+        stompClientB.connect({},function(frame){
+            stompClientB.subscribe('/topic/bullet.'+idG, function(event){
+                var jsonEvent = JSON.parse(event.body);
+                if (jsonEvent.ERROR != undefined) {
+                    console.log(event.ERROR);
+                    alert("Cannot add the current bullet")
+                    window.location.reload();
+                }
+            });
+        });        
+    };
     var connectAndSubscribe = function (idG) {
         idGame = idG;
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
-
-
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
 
@@ -48,6 +63,7 @@ var app = (function () {
                 }
 
             });
+            
             connected = true;
         });
 
@@ -60,6 +76,7 @@ var app = (function () {
         init: function (idG) {
             //websocket connection
             connectAndSubscribe(idG);
+            connectAndSubscribeB(idG);
 
 
         },
@@ -71,19 +88,25 @@ var app = (function () {
                 bullet = new Bullet(id, x, y);
                 bullets.push(bullet);
                 try{
-                    stompClient.send("/app/bullet." + idGame, {}, JSON.stringify(bullet));
+                    stompClientB.send("/app/bullet." + idGame, {}, JSON.stringify(bullet));
                 }catch(error){
                     alert("errrrroor");
                 }
+            }                        
+        },
+        updateBullet: function (posx, posy) {
+            if (stompClient != null) {
+                bullet.x = posx;
+                bullet.y = posy;
+                stompClientB.send("/app/bullet." + idGame, {}, JSON.stringify(bullet));
             }
-            
-            
+
         },
         updateSpecificBullet: function (id,posx, posy) {
-            if (stompClient != null) {
+            if (stompClient != null) {                
                 bullets[id].x = posx;
                 bullets[id].y = posy;
-                stompClient.send("/app/bullet." + idGame, {}, JSON.stringify(bullets[id]));
+                stompClientB.send("/app/bullet." + idGame, {}, JSON.stringify(bullets[id]));
             }
 
         },
@@ -127,6 +150,7 @@ var app = (function () {
         disconnect: function () {
             if (stompClient !== null) {
                 stompClient.disconnect();
+                stompClientB.disconnect();
             }
             setConnected(false);
             console.log("Disconnected");

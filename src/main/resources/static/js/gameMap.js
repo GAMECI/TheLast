@@ -116,7 +116,8 @@ $(function () {
         if(!gameOver){
             $(".playerBullets").each(function(){
 					var posx = $(this).x();
-					if(posx > PLAYGROUND_WIDTH){
+                                        var posy = $(this).y();
+					if(posx > PLAYGROUND_WIDTH ||posy > PLAYGROUND_HEIGHT){
 						$(this).remove();
 						return;
 					}                                        
@@ -132,8 +133,8 @@ $(function () {
                                                 } else {
                                                     $(this).y(BULLET_SPEED, true);
                                                 }
-                                                app.updateSpecificBullet(conta,$(this).x(), $(this).y());
-                                                
+                                                //app.updateSpecificBullet(conta,$(this).x(), $(this).y());
+                                                app.updateBullet($(this).x(), $(this).y());
                                             }                                               
                                             conta++;                                            
                                         }
