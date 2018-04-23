@@ -100,15 +100,6 @@ var app = (function () {
                 bullet.y = posy;
                 stompClientB.send("/app/bullet." + idGame, {}, JSON.stringify(bullet));
             }
-
-        },
-        updateSpecificBullet: function (id,posx, posy) {
-            if (stompClient != null) {                
-                bullets[id].x = posx;
-                bullets[id].y = posy;
-                stompClientB.send("/app/bullet." + idGame, {}, JSON.stringify(bullets[id]));
-            }
-
         },
         publishPlayer: function (posx, posy, color, name, status) {
             if (stompClient != null) {
