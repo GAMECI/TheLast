@@ -17,11 +17,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <script src="/webjars/sockjs-client/sockjs.min.js"></script>
         <script src="/webjars/stomp-websocket/stomp.min.js"></script>
         <script src="js/stompApp.js"></script>
+        <script>
+            function loadList(){
+                
+                document.getElementById("aviableGames").innerHTML = modifyClient();                                          
+            }
+            
+        </script>   
         <link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
         <link href="/css/combo.css" rel="stylesheet" type="text/css" media="all" />
     </head>
 
-    <body>
+    <body onload="loadList();">
         <p class="texto">THE LAST</p>
         <div id="playground">
             <div id="index" class="Registro" >
@@ -29,7 +36,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <input id="idName" name="idName" type="text" required placeholder="User name" autocomplete="off"><br/><br/>
 
                 <span class="fontawesome-user"></span>
-                <input id="idGame" name="idGame" type="number" required placeholder="Id game" autocomplete="off"><br/><br/>		
+                <input id="idGame" name="idGame" type="number" required placeholder="Id game" autocomplete="off"><br/><br/>	
+                
+                <p style="color:red;" id="aviableGames">The aviable games were: </p>
+                
 
                 <form name = "selectorColor">
                     <label class="container">

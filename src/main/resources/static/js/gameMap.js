@@ -13,6 +13,18 @@ var gameOver = false;
 var bulletCounter = 0;
 var playersNames = new Array();
 var warriors = new Array();
+var content = "The aviable games were: " ;
+var aviableGames = new Array();
+
+var modifyClient = function(){
+
+            aviableGames.push(0);
+            for(i = 0; i< aviableGames.length; i++){
+                content +=aviableGames[i]+"  "; 
+            }
+            return content;
+
+};
 
 
 var addPlayer = function (event) {
@@ -168,15 +180,17 @@ $(function () {
 
     
     $("#start").click(function () {
+        
         playerName = $('#idName').val();
-        $.playground().startGame(function () {
+        $.playground().startGame(function () {           
             app.init($('#idGame').val());
+            aviableGames.push($('#idGame').val());
             var ctrl = document.selectorColor.radio;
             for (i = 0; i < ctrl.length; i++) {
                 if (ctrl[i].checked) {
                     var color = ctrl[i].value;
                 }
-            }
+            }                             
             $("#index").remove();
             setTimeout(function (){
                 app.publishPlayer(70,60,color,playerName,"idle");
