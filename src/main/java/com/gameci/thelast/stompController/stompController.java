@@ -175,17 +175,18 @@ public class stompController {
 
     public int[] posCalculator(int idGame) {
         int[] positions = new int[2];
-        int minVal = 60;
+        int minValX = 60;
+        int minValY = 500;
         int maxVal = 200;
         Random rm = new Random();
-        positions[0] = minVal;
-        positions[1] = minVal;
+        positions[0] = minValX;
+        positions[1] = minValY;
         boolean possible = false;
         synchronized (gss) {
             while (!possible) {
                 boolean breakLoop = false;
-                positions[0] = rm.nextInt(maxVal) + minVal;
-                positions[1] = rm.nextInt(maxVal) + minVal;
+                positions[0] = rm.nextInt(maxVal) + minValX;
+                positions[1] = rm.nextInt(maxVal) + minValY;
                 Map game = gss.getMap(idGame);
                 Collection<Warrior> values = game.getWarriors();
                 for (Warrior i : values) {

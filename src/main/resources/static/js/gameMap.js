@@ -90,7 +90,8 @@ $(function () {
             .addGroup("background", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
             .addGroup("players", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
             .addGroup("zombies", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
-            .addGroup("specialObject",{width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT})
+            .addGroup("specialObject",{width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
+            .addGroup("overlay",{width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT});
 
 
     //Intialize the background
@@ -118,16 +119,17 @@ $(function () {
                 for(i=0; i<3;i++){						
                     app.publishZombie(i,100,100,"idle")
 		}
+                $("#overlay").append("<div id='shieldHUD'style='color: white; width: 100px; position: absolute; font-family: verdana, sans-serif;'>"+playerName+"</div>")
                 if(color == "blue"){
-                    $("#players").addSprite("healthBarB",{width:560, height:138, animation:healthBarB, posx:50,posy:0});
+                    $("#overlay").addSprite("healthBarB",{width:560, height:138, animation:healthBarB, posx:50,posy:0});
                 }else if(color=="green"){
-                    $("#players").addSprite("healthBarG",{width:560, height:138, animation:healthBarG, posx:50,posy:0});
+                    $("#overlay").addSprite("healthBarG",{width:560, height:138, animation:healthBarG, posx:50,posy:0});
                 }else if(color =="red"){
-                    $("#players").addSprite("healthBarR",{width:560, height:138, animation:healthBarR, posx:50,posy:0});
+                    $("#overlay").addSprite("healthBarR",{width:560, height:138, animation:healthBarR, posx:50,posy:0});
                 }else if(color =="yellow"){
-                    $("#players").addSprite("healthBarY",{width:560, height:138, animation:healthBarY, posx:50,posy:0});
+                    $("#overlay").addSprite("healthBarY",{width:560, height:138, animation:healthBarY, posx:50,posy:0});
                 }
-           },2000);
+           },2000); 
         });
     });
   
