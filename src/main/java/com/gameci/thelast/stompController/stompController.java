@@ -70,7 +70,7 @@ public class stompController {
                     addNewZombie(first, zombie, idGame);
                 }                
             }else{
-                updateZombie(zombie, idGame);
+                updateZombie(zombie, idGame);                
             }        
             System.out.println(zombie.toString());
             msgt.convertAndSend("/topic/zombie."+idGame,zombie);

@@ -5,6 +5,10 @@ var playerName;
 var playerAnimation= new Array();
 var alReady=false;
 var alReadyZombie=false;
+var gameOver = false;
+var SPEED_ZOMBIE = 100;
+var zombies = {};
+var numZombies = 0;
 
 var zombieAnimation= new Array();
 
@@ -22,8 +26,10 @@ var addPlayer= function(event){
 };
 
 var addZombie= function(event){		    
+	if($("#"+event.id).val()!=undefined)
+        $("#"+event.id).remove();
     if(event.status=="up" || event.status=="down"){        		
-		$("#zombies").addSprite(event.id,{width:39,height:53,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
+		$("#zombies").addSprite(event.id,{width:65,height:70,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
     }else{        		
 		$("#zombies").addSprite(event.id,{width:65,height:70,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
     }    
@@ -66,8 +72,45 @@ $(function(){
 
     //Intialize the background
 
-    $("#background").addSprite("background3",{width:PLAYGROUND_WIDTH,height:PLAYGROUND_HEIGHT,animation:background3});
-
+    $("#background").addSprite("background3",{width:PLAYGROUND_WIDTH,height:PLAYGROUND_HEIGHT,animation:background3});	
+	
+	
+	$.playground().registerCallback(function(){		
+		if(!gameOver){					
+			app.updateZombie();			
+			/**if(numZombies == 1){
+				$(".tres").each(function(){
+					var posZx = $(this).posx();
+					var posZy = $(this).posy();
+					
+					var px = $("#"+playerName).x();
+					var py = $("#"+playerName).y();
+					
+					if(py > posZy){
+						$(this).posy(10, true);
+						statusZ = "down";							
+					}
+					if(py < posZy){
+						$(this).posy(-10, true);
+						statusZ = "up"						
+					}
+					if(py == posZy){
+						if(px > posZx){
+							statusZ = "right";
+							$(this).posx(10, true);
+							
+						}
+						if(px < posZx){
+							statusZ = "left";							
+							$(this).posx(-10, true);
+						}							
+					}																				
+					app.updateZombie($(this).id(), $(this).posx(), $(this).posy(), statusZ);			
+				});													
+			}**/
+		}	
+	}, SPEED_ZOMBIE);
+	
 
 
     $("#start").click(function () {
@@ -83,7 +126,8 @@ $(function(){
                 $("#index").remove();
                 setTimeout(function (){                    
 					app.publishPlayer(70,60,color,playerName,"idle");
-					for(i=0; i<3;i++){						
+					for(i=0; i<1;i++){						
+						numZombies+=1;
 						app.publishZombie(i,100,100,"idle")
 					}
                 },800);
