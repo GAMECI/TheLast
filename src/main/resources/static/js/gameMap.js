@@ -41,7 +41,11 @@ var addObject= function (event){
     $("#specialObject").addSprite("heartDown",{width:35, height:32, animation:specialObject["moveDown"], posx:event.posx,posy:event.posy});
 }
 
-$(function () {
+
+
+
+
+<$(function () {
 
 
     //Animation declaration
@@ -54,7 +58,7 @@ $(function () {
     playerAnimation["idle"]=new $.gQ.Animation({imageURL:"./js/player/survivor-idle_handgun_0.png"})	
 
     var background3 = new $.gQ.Animation({imageURL:"./js/bg/background.png"});
-    var healthBarY = new $.gQ.Animation({imageURL:"./js/player/lifeBarY.png"});         
+    var healthBarY = new $.gQ.Animation({imageURL:"./js/player/bull.png"});         
     var healthBarB = new $.gQ.Animation({imageURL:"./js/player/lifeBarB.png"});         
     var healthBarG = new $.gQ.Animation({imageURL:"./js/player/lifeBarG.png"});         
     var healthBarR = new $.gQ.Animation({imageURL:"./js/player/lifeBarR.png"});     
@@ -106,32 +110,53 @@ $(function () {
 
         playerName = $('#idName').val();
         $.playground().startGame(function () {
-            app.init($('#idGame').val());
-            var ctrl = document.selectorColor.radio;
-            for (i = 0; i < ctrl.length; i++) {
-                if (ctrl[i].checked) {
-                    var color = ctrl[i].value;
-                }
-            }
-            $("#index").remove();
-            setTimeout(function (){
-                app.publishPlayer(70,60,color,playerName,"idle");
-                for(i=0; i<3;i++){						
-                    app.publishZombie(i,100,100,"idle")
-		}
-                $("#overlay").append("<div id='shieldHUD'style='color: white; width: 100px; position: absolute; font-family: verdana, sans-serif;'>"+playerName+"</div>")
+                initGame($('#idGame').val());
+            
+            
+        /**    setTimeout(function (){
+                
+              $("#overlay").append("<div id='shieldHUD'style='color: white; width: 100px; position: absolute; font-family: verdana, sans-serif;'>"+playerName+"</div>")
                 if(color == "blue"){
                     $("#overlay").addSprite("healthBarB",{width:560, height:138, animation:healthBarB, posx:50,posy:0});
                 }else if(color=="green"){
                     $("#overlay").addSprite("healthBarG",{width:560, height:138, animation:healthBarG, posx:50,posy:0});
-                }else if(color =="red"){
+                }else if(color =="red"){    
                     $("#overlay").addSprite("healthBarR",{width:560, height:138, animation:healthBarR, posx:50,posy:0});
                 }else if(color =="yellow"){
                     $("#overlay").addSprite("healthBarY",{width:560, height:138, animation:healthBarY, posx:50,posy:0});
                 }
-           },2000); 
+           },2000);**/ 
         });
     });
+
+    var initGame = function(idGame){
+    var promise= new Promise(function(resolve,reject){
+        app.init(idGame);
+        var ctrl = document.selectorColor.radio;
+        for (i = 0; i < ctrl.length; i++) {
+            if (ctrl[i].checked) {
+                var color = ctrl[i].value;
+            }
+        }
+        $("#index").remove();
+        initCharacters(color,playerName);
+        resolve();
+    });
+    promise.then(
+        function(){
+            app.publishPlayer(70,60,color,playerName,"idle");
+            for(i=0; i<3;i++){                      
+                app.publishZombie(i,100,100,"idle")
+            }    
+        }
+    )
+    .catch(
+        function(reason){
+            console.log("No se ha podido conectar "+ reason);
+        }
+    )
+    
+}
   
     
 
