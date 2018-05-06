@@ -129,34 +129,35 @@ var addObject= function (event){
         });
     });
 
+    var color;
+
+
     var initGame = function(idGame){
-    var promise= new Promise(function(resolve,reject){
+        subscribe(idGame,sendCharacters);
+    };
+
+    var subscribe = function(idGame,callback){
         app.init(idGame);
         var ctrl = document.selectorColor.radio;
         for (i = 0; i < ctrl.length; i++) {
             if (ctrl[i].checked) {
-                var color = ctrl[i].value;
+                color = ctrl[i].value;
             }
         }
         $("#index").remove();
-        initCharacters(color,playerName);
-        resolve();
-    });
-    promise.then(
-        function(){
+        setTimeout(function(){
+            callback();
+        },3000);
+    }
+
+    var sendCharacters = function(){
+        setTimeout(function(){
             app.publishPlayer(70,60,color,playerName,"idle");
             for(i=0; i<3;i++){                      
                 app.publishZombie(i,100,100,"idle")
             }    
-        }
-    )
-    .catch(
-        function(reason){
-            console.log("No se ha podido conectar "+ reason);
-        }
-    )
-    
-}
+        },200);
+    }
   
     
 
