@@ -58,10 +58,10 @@ var addObject= function (event){
     playerAnimation["idle"]=new $.gQ.Animation({imageURL:"./js/player/survivor-idle_handgun_0.png"})	
 
     var background3 = new $.gQ.Animation({imageURL:"./js/bg/background.png"});
-    var healthBarY = new $.gQ.Animation({imageURL:"./js/player/bull.png"});         
-    var healthBarB = new $.gQ.Animation({imageURL:"./js/player/lifeBarB.png"});         
-    var healthBarG = new $.gQ.Animation({imageURL:"./js/player/lifeBarG.png"});         
-    var healthBarR = new $.gQ.Animation({imageURL:"./js/player/lifeBarR.png"});     
+    var healthBarY = new $.gQ.Animation({imageURL:"./js/player/bar/yellow/100/22/bar.png"});         
+    var healthBarB = new $.gQ.Animation({imageURL:"./js/player/bar/blue/100/22/bar.png"});         
+    var healthBarG = new $.gQ.Animation({imageURL:"./js/player/bar/green/100/22/bar.pngbar.png"});         
+    var healthBarR = new $.gQ.Animation({imageURL:"./js/player/bar/red/100/22/bar.png"});     
     bullets["bulletU"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletU.png"});     
     bullets["bulletD"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletD.png"});     
     bullets["bulletL"] = new $.gQ.Animation({imageURL:"./js/bullets/bulletL.png"});                 
@@ -95,7 +95,7 @@ var addObject= function (event){
             .addGroup("players", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
             .addGroup("zombies", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
             .addGroup("specialObject",{width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT}).end()
-            .addGroup("overlay",{width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT});
+            .addGroup("overlay",{width: PLAYGROUND_WIDTH, height:PLAYGROUND_HEIGHT});
 
 
     //Intialize the background
@@ -110,13 +110,10 @@ var addObject= function (event){
 
         playerName = $('#idName').val();
         $.playground().startGame(function () {
-                initGame($('#idGame').val());
-            
-            
-        /**    setTimeout(function (){
-                
-              $("#overlay").append("<div id='shieldHUD'style='color: white; width: 100px; position: absolute; font-family: verdana, sans-serif;'>"+playerName+"</div>")
-                if(color == "blue"){
+            initGame($('#idGame').val());
+            document.getElementById("overlay").setAttribute("align","left");    
+            $("#overlay").append("<br><div id='shieldHUD' style='background-color:"+color+" ; height:113px; width:28.6%; align:center;background-image: url(/js/player/bar.png);'><h2 style='position:absolute; left: 230px; top: 36px;'>"+playerName+"</h2></div>")
+               /** if(color == "blue"){
                     $("#overlay").addSprite("healthBarB",{width:560, height:138, animation:healthBarB, posx:50,posy:0});
                 }else if(color=="green"){
                     $("#overlay").addSprite("healthBarG",{width:560, height:138, animation:healthBarG, posx:50,posy:0});
@@ -124,8 +121,7 @@ var addObject= function (event){
                     $("#overlay").addSprite("healthBarR",{width:560, height:138, animation:healthBarR, posx:50,posy:0});
                 }else if(color =="yellow"){
                     $("#overlay").addSprite("healthBarY",{width:560, height:138, animation:healthBarY, posx:50,posy:0});
-                }
-           },2000);**/ 
+                }**/
         });
     });
 
@@ -152,9 +148,9 @@ var addObject= function (event){
 
     var sendCharacters = function(){
         setTimeout(function(){
-            app.publishPlayer(70,60,color,playerName,"idle");
+            app.publishPlayer(122,416,color,playerName,"idle");
             for(i=0; i<3;i++){                      
-                app.publishZombie(i,100,100,"idle")
+                app.publishZombie(i,500,500,"idle")
             }    
         },200);
     }

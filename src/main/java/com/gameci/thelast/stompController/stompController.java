@@ -34,6 +34,8 @@ public class stompController {
 
     private GameServicesStub gss = new GameServicesStub();
     private AtomicInteger objectInstance = new AtomicInteger();
+    private int minVal=100;
+    private int maxVal=600;
 
     @MessageMapping("/player.{idGame}")
     public void handlePlayerEvent(Warrior warrior, @DestinationVariable int idGame) throws GameServicesException {
@@ -106,10 +108,6 @@ public class stompController {
         boolean possible = false;
         Random rm = new Random();
         Map game = gss.getMap(idGame);
-        int minVal = 60;
-        int maxVal = 200;
-        int newX = minVal;
-        int newY = minVal;
         if (!first) {
             loadWarriors(idGame, game);
             int[] positions = posCalculator(idGame);
@@ -157,8 +155,6 @@ public class stompController {
 
     public void addSpecialObject(int idGame) {
         double deltaTime = (System.currentTimeMillis() - gss.getMap(idGame).getInitalTime()) / 60000.0;
-        int minVal = 60;
-        int maxVal = 200;
         Random rm = new Random();
         int newX = minVal;
         int newY = minVal;
