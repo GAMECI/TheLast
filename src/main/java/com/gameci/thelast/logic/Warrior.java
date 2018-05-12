@@ -87,7 +87,7 @@ public class Warrior {
         this.y=y;
     }
     public String toString(){
-        return "name= "+name+" healt= "+healt+" color= "+color+" score= "+score+" x= "+x+" y= "+y;
+        return "name= "+name+" healt= "+healt+" color= "+color+" score= "+score+" x= "+x+" y= "+y+" status= "+status;
     }
     
 }

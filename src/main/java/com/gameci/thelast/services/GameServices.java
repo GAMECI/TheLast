@@ -6,6 +6,7 @@
 package com.gameci.thelast.services;
 
 import com.gameci.thelast.logic.Map;
+import com.gameci.thelast.logic.SpecialObject;
 import com.gameci.thelast.logic.Warrior;
 import com.gameci.thelast.logic.Zombie;
 
@@ -13,13 +14,22 @@ import com.gameci.thelast.logic.Zombie;
  *
  * @author andres
  */
-public interface  GameServices {
+public interface GameServices {
 
     void createNewMap(int idGame) throws GameServicesException;
-    void addNewWarriorToMap(Warrior warrior,int idGame) throws GameServicesException;
-    void updateWarrior(Warrior warrior,int idGame) throws GameServicesException;
-    Map getMap(int idGame)throws GameServicesException;
-    void addNewZombieToMap(Zombie zombie,int idGame) throws GameServicesException;
-    void updateZombie(Zombie zombie,int idGame) throws GameServicesException;
-   
+
+    void addNewWarriorToMap(Warrior warrior, int idGame) throws GameServicesException;
+
+    void updateWarrior(Warrior warrior, int idGame) throws GameServicesException;
+
+    Map getMap(int idGame) throws GameServicesException;
+
+    void addNewZombieToMap(Zombie zombie, int idGame) throws GameServicesException;
+
+    void updateZombie(Zombie zombie, int idGame) throws GameServicesException;
+
+    void putSpecialObjectInMap(int idGame, SpecialObject object) throws GameServicesException;
+
+    void removeSpecialObjectToMap(int idGame, SpecialObject object) throws GameServicesException;
+
 }
