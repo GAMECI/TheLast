@@ -10,7 +10,7 @@ var app = (function () {
     var idGame = 0;
 
     class Warrior {
-        constructor(name, healt, color, score, x, y, status) {
+        constructor(name, healt, color, score, x, y, status,ammo) {
             this.name = name;
             this.healt = healt;
             this.color = color;
@@ -18,6 +18,7 @@ var app = (function () {
             this.x = x;
             this.y = y;
             this.status = status;
+            this.ammo =ammo
         }
     }
     
@@ -92,11 +93,12 @@ var app = (function () {
 
         publishPlayer: function (posx, posy, color, name, status) {
             if (stompClient != null) {
-                var healt = 100;
+                var ammo = 22;
+                var healt = 50;
                 var score = 0;
                 var x = posx;
                 var y = posy;
-                warrior = new Warrior(name, healt, color, score, x, y, status);
+                warrior = new Warrior(name, healt, color, score, x, y, status,ammo);
                 try{
                     stompClient.send("/app/player." + idGame, {}, JSON.stringify(warrior));
                 }catch(error){

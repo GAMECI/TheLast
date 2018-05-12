@@ -12,6 +12,8 @@ var alReadyZombie=false;
 
 
 var addPlayer = function (event) {
+    $("#shieldHUD").remove();
+    $("#overlay").append("<div id='shieldHUD' style='background-color:"+event.color+" ; height:113px; width:28.6%; align:center;background-image: url(/js/player/bar/"+event.healt+"/"+event.ammo+".png);'><h2 style='position:absolute; left: 230px; top: 36px;'>"+playerName+"</h2></div>")
     if ($("#" + event.name).val() != undefined)
         $("#" + event.name).remove();
     if (event.status == "up" || event.status == "down") {
@@ -112,16 +114,7 @@ var addObject= function (event){
         $.playground().startGame(function () {
             initGame($('#idGame').val());
             document.getElementById("overlay").setAttribute("align","left");    
-            $("#overlay").append("<br><div id='shieldHUD' style='background-color:"+color+" ; height:113px; width:28.6%; align:center;background-image: url(/js/player/bar.png);'><h2 style='position:absolute; left: 230px; top: 36px;'>"+playerName+"</h2></div>")
-               /** if(color == "blue"){
-                    $("#overlay").addSprite("healthBarB",{width:560, height:138, animation:healthBarB, posx:50,posy:0});
-                }else if(color=="green"){
-                    $("#overlay").addSprite("healthBarG",{width:560, height:138, animation:healthBarG, posx:50,posy:0});
-                }else if(color =="red"){    
-                    $("#overlay").addSprite("healthBarR",{width:560, height:138, animation:healthBarR, posx:50,posy:0});
-                }else if(color =="yellow"){
-                    $("#overlay").addSprite("healthBarY",{width:560, height:138, animation:healthBarY, posx:50,posy:0});
-                }**/
+            $("#overlay").append("<br><div id='shieldHUD' style='background-color:"+color+" ; height:113px; width:28.6%; align:center;background-image: url(/js/player/bar/100/22.png);'><h2 style='position:absolute; left: 230px; top: 36px;'>"+playerName+"</h2></div>")
         });
     });
 
