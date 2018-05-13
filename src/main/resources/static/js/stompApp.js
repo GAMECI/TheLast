@@ -1,7 +1,7 @@
 var connected = false;
 var warrior;
 var bullet;
-
+var bullets = new Array();
 var app = (function () {
 
 
@@ -27,23 +27,7 @@ var app = (function () {
         }
         
     }
-
-    var connectAndSubscribeB = function(idG){
-        idGame = idG;
-        console.info('Connecting to WS...');
-        var socket = new SockJS('/stompendpoint');
-        stompClientB = Stomp.over(socket);
-        stompClientB.connect({},function(frame){
-            stompClientB.subscribe('/topic/bullet.'+idG, function(event){
-                var jsonEvent = JSON.parse(event.body);
-                if (jsonEvent.ERROR != undefined) {
-                    console.log(event.ERROR);
-                    alert("Cannot add the current bullet")
-                    window.location.reload();
-                }
-            });
-        });        
-    };
+    
     var connectAndSubscribe = function (idG) {
         idGame = idG;
         console.info('Connecting to WS...');
@@ -64,6 +48,11 @@ var app = (function () {
 
             });
             
+            stompClientB.subscribe('/topic/bullet.'+idG, function(event){
+                var jsonEvent = JSON.parse(event.body);
+                addBullet(jsonEvent);
+            });
+            
             connected = true;
         });
 
@@ -76,19 +65,18 @@ var app = (function () {
         init: function (idG) {
             //websocket connection
             connectAndSubscribe(idG);
-            connectAndSubscribeB(idG);
 
 
         },
         publishBullet: function(id, posx,posy){
             if(stompClient!= null){
-                var id = id;
+                var idB = id;
                 var x = posx;
                 var y = posy;
-                bullet = new Bullet(id, x, y);
+                bullet = new Bullet(idB, x, y);
                 bullets.push(bullet);
                 try{
-                    stompClientB.send("/app/bullet." + idGame, {}, JSON.stringify(bullet));
+                    stompClient.send("/app/bullet." + idGame, {}, JSON.stringify(bullet));
                 }catch(error){
                     alert("errrrroor");
                 }
@@ -102,12 +90,17 @@ var app = (function () {
             }
 
         },
-        updateSpecificBullet: function (id,posx, posy) {
-            if (stompClient != null) {                
-                bullets[id].x = posx;
-                bullets[id].y = posy;
-                stompClientB.send("/app/bullet." + idGame, {}, JSON.stringify(bullets[id]));
+        updateSpecificBullet: function (idB,posx, posy) {
+            for(var i in bullets){
+                if(i.id== idB){
+                    if (stompClient != null) {                
+                        bullets[i].x = posx;
+                        bullets[i].y = posy;
+                        stompClient.send("/app/bullet." + idGame, {}, JSON.stringify(bullets[i]));
+                    }                    
+                }                                
             }
+            
 
         },
         publishPlayer: function (posx, posy, color, name, status) {

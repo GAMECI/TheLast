@@ -32,9 +32,18 @@ public class stompController {
     
     @MessageMapping("/bullet.{idGame}")
     public void handleBullet(Bullet bullet, @DestinationVariable int idGame) throws GameServicesException{
-        try{
+        boolean first = false;
+        synchronized (gss) {
             Map game = gss.getMap(idGame);
+            if (game == null) {
+                gss.createNewMap(idGame);
+                game = gss.getMap(idGame);
+                first = true;
+            }
+}
+        try{
             synchronized(gss){
+                Map game = gss.getMap(idGame);            
                 addNewBullet(bullet, idGame);
                 msgt.convertAndSend("/topic/bullet." + idGame, bullet);
             }
