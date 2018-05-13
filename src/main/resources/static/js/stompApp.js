@@ -82,17 +82,24 @@ var app = (function () {
         });
 
     };
+	
+	var attack = function(){				
+		warrior.healt -=10;
+		stompClient.send("/app/player." + idGame, {}, JSON.stringify(warrior));
+		if(warrior.healt == 0){
+			alert(warrior.healt + "SI ATACO" + "GAME OVER");
+		}
+		
+	}
 
     var updateZombie = function (zombie) {
-        if (stompClient != null) {
-            /**if(zombiesList.length == 1){					
-             zombiesList[idz].posx = xz;
-             zombiesList[idz].posy = xy;
-             zombiesList[idz].status = sz;
-             stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombiesList[idz]));			
-             }**/
 
-            //zombiesList.forEach(function (e, i, zombiesList){																			
+		if (stompClient != null) {            
+		
+			if(warrior.x == zombie.posx){
+				attack();				
+			}
+			
             if (warrior.y > zombie.posy) {
                 zombie.posy += 1;
                 zombie.status = "down";
