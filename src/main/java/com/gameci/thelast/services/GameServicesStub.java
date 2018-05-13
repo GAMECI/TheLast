@@ -10,11 +10,14 @@ import com.gameci.thelast.logic.SpecialObject;
 import com.gameci.thelast.logic.Warrior;
 import com.gameci.thelast.logic.Zombie;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author andres
  */
+
+@Service
 public class GameServicesStub implements GameServices {
 
     private ConcurrentHashMap<Integer, Map> games;

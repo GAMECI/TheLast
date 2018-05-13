@@ -10,6 +10,7 @@ import com.gameci.thelast.logic.SpecialObject;
 import com.gameci.thelast.logic.Warrior;
 
 import com.gameci.thelast.logic.Zombie;
+import com.gameci.thelast.services.GameServices;
 
 import com.gameci.thelast.services.GameServicesException;
 import com.gameci.thelast.services.GameServicesStub;
@@ -31,8 +32,10 @@ public class stompController {
 
     @Autowired
     SimpMessagingTemplate msgt;
-
-    private GameServicesStub gss = new GameServicesStub();
+    
+    @Autowired
+    private GameServices gss;
+    
     private AtomicInteger objectInstance = new AtomicInteger();
     private boolean enable = true;
     private final static int MINVALX=35;
@@ -126,7 +129,7 @@ public class stompController {
         gss.updateZombie(zombie, idGame);
     }
 
-    public void addNewZombie(boolean first, Zombie zombie, int idGame) {
+    public void addNewZombie(boolean first, Zombie zombie, int idGame) throws GameServicesException {
         Map game = gss.getMap(idGame);
         if (!first) {
             loadZombies(idGame, game);
@@ -148,7 +151,7 @@ public class stompController {
         }
     }
 
-    public void addSpecialObject(int idGame) {
+    public void addSpecialObject(int idGame) throws GameServicesException {
         double deltaTime = (System.currentTimeMillis() - gss.getMap(idGame).getInitalTime()) / 60000.0;
         Random rm = new Random();
         int typeOfObject=rm.nextInt(2);
@@ -168,7 +171,7 @@ public class stompController {
 
     }
 
-    public int[] posCalculator(int idGame) {
+    public int[] posCalculator(int idGame) throws GameServicesException {
         int[] positions = new int[2];
         Random rm = new Random();
         positions[0] = MINVALX;

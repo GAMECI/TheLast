@@ -50,6 +50,7 @@ var testCollision = function(name){
             }else if(warrior.ammo<22){
                 warrior.ammo=warrior.ammo+1;
             }
+            gameController.deleteSpecialObject()
             $("#"+this.id).remove();
         }
     });
