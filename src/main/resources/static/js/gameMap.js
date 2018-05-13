@@ -4,11 +4,17 @@ var PLAYGROUND_WIDTH = 1500;
 var BULLET_SPEED =  10;
 var bullets = new Array();
 var playerName;
+
+var playerAnimation= new Array();
 var zombieAnimation= new Array();
-var playerAnimation = new Array();
-var specialObject = new Array();
-var alReady = false;
+var specialObject= new Array();
+var alReady=false;
 var alReadyZombie=false;
+var gameOver = false;
+var SPEED_ZOMBIE = 1;
+var zombies = {};
+var numZombies = 0;
+
 
 
 var addPlayer = function (event) {
@@ -25,8 +31,10 @@ var addPlayer = function (event) {
 
 
 var addZombie= function(event){		    
+	if($("#"+event.id).val()!=undefined)
+        $("#"+event.id).remove();
     if(event.status=="up" || event.status=="down"){        		
-		$("#zombies").addSprite(event.id,{width:39,height:53,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
+		$("#zombies").addSprite(event.id,{width:65,height:70,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
     }else{        		
 		$("#zombies").addSprite(event.id,{width:65,height:70,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
     }    
@@ -96,9 +104,14 @@ $(function () {
     //Intialize the background
 
 
-    $("#background").addSprite("background3", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT, animation: background3});
-
-
+    $("#background").addSprite("background3",{width:PLAYGROUND_WIDTH,height:PLAYGROUND_HEIGHT,animation:background3});	
+	
+	
+	$.playground().registerCallback(function(){		
+		if(!gameOver){					
+			app.moveZombie();						
+		}	
+	}, SPEED_ZOMBIE);	
 
 
     $("#start").click(function () {
@@ -111,24 +124,17 @@ $(function () {
                 if (ctrl[i].checked) {
                     var color = ctrl[i].value;
                 }
-            }
-            $("#index").remove();
-            setTimeout(function (){
-                app.publishPlayer(70,60,color,playerName,"idle");
-                for(i=0; i<3;i++){						
-                    app.publishZombie(i,100,100,"idle")
-		}
-                if(color == "blue"){
-                    $("#players").addSprite("healthBarB",{width:560, height:138, animation:healthBarB, posx:50,posy:0});
-                }else if(color=="green"){
-                    $("#players").addSprite("healthBarG",{width:560, height:138, animation:healthBarG, posx:50,posy:0});
-                }else if(color =="red"){
-                    $("#players").addSprite("healthBarR",{width:560, height:138, animation:healthBarR, posx:50,posy:0});
-                }else if(color =="yellow"){
-                    $("#players").addSprite("healthBarY",{width:560, height:138, animation:healthBarY, posx:50,posy:0});
-                }
-           },2000);
-        });
+			}
+
+			$("#index").remove();
+                setTimeout(function (){                    
+					app.publishPlayer(70,60,color,playerName,"idle");
+					for(i=0; i<3;i++){						
+						numZombies+=1;
+						app.publishZombie(i,100+i*(100),100+i*100,"idle")
+					}
+                },800);
+            })
     });
   
     
@@ -168,3 +174,4 @@ $(function () {
         }
     });
 });
+
