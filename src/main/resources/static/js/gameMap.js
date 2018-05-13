@@ -13,8 +13,6 @@ var alReadyZombie=false;
 
 
 var addObject= function(event){
-    alert(event);
-    alert(event.type)
     $("#specialObject").addSprite("heartUp",{width:35, height:32, animation:specialObject[event.type], posx: event.posx,posy:event.posy});
 };
 
