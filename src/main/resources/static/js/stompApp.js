@@ -84,12 +84,8 @@ var app = (function () {
     };
 	
 	var attack = function(){				
-		warrior.healt -=10;
-		stompClient.send("/app/player." + idGame, {}, JSON.stringify(warrior));
-		if(warrior.healt == 0){
-			alert(warrior.healt + "SI ATACO" + "GAME OVER");
-		}
-		
+		warrior.healt -=25;
+		stompClient.send("/app/player." + idGame, {}, JSON.stringify(warrior));				
 	}
 
     var updateZombie = function (zombie) {
