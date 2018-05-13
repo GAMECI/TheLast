@@ -13,7 +13,7 @@ var alReadyZombie=false;
 
 
 var addObject= function(event){
-    $("#specialObject").addSprite("heartUp",{width:35, height:32, animation:specialObject[event.type], posx: event.posx,posy:event.posy});
+    $("#specialObject").addSprite("object"+event.type,{width:35, height:32, animation:specialObject[event.type], posx: event.posx,posy:event.posy});
 };
 
 
@@ -27,6 +27,8 @@ var addPlayer = function (event) {
     } else {
         $("#players").addSprite(event.name, {width: 53, height: 39, animation: playerAnimation[event.status], posx: event.x, posy: event.y});
     }
+
+    testCollision(event.name);
 
     alReady = true;
 };
@@ -42,7 +44,19 @@ var addZombie= function(event){
 };
 
 
-
+var testCollision = function(name){
+    var coll = $("#"+name).collision().each(function(){
+        if(this.id=="objectmedicine" || this.id=="objectammo"){
+            if(this.id=="objectmedicine" && warrior.healt<100){
+                warrior.healt=warrior.healt+25;
+            }else if(warrior.ammo<22){
+                warrior.ammo=warrior.ammo+1;
+            }
+            $("#"+this.id).remove();
+        }
+    });
+    
+};
 
 
 
@@ -108,7 +122,9 @@ $(function () {
 
     $("#background").addSprite("background3", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT, animation: background3});
 
-
+    $.loadCallback(function(percent){
+        $("#loadingBar").width(400*percent);
+});
 
 
     $("#start").click(function () {
