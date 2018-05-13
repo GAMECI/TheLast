@@ -63,13 +63,7 @@ var app = (function () {
             });
             stompClient.subscribe('/topic/object.' + idG, function (event) {
                 var jsonEvent = JSON.parse(event.body);
-                if (jsonEvent.ERROR != undefined) {
-                    console.log(event.ERROR);
-                    alert("A player with  the same name already exists,  please try with other name or enter in other room ")
-                    window.location.reload();
-                } else {
                     addObject(jsonEvent);
-                }
 
             });
             stompClient.subscribe('/topic/zombie.'+idG, function (event){				
@@ -94,7 +88,7 @@ var app = (function () {
         publishPlayer: function (posx, posy, color, name, status) {
             if (stompClient != null) {
                 var ammo = 22;
-                var healt = 50;
+                var healt = 100;
                 var score = 0;
                 var x = posx;
                 var y = posy;

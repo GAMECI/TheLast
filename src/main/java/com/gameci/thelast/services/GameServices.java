@@ -30,6 +30,6 @@ public interface GameServices {
 
     void putSpecialObjectInMap(int idGame, SpecialObject object) throws GameServicesException;
 
-    void removeSpecialObjectToMap(int idGame, SpecialObject object) throws GameServicesException;
+    void removeSpecialObjectsToMap(int idGame) throws GameServicesException;
 
 }

@@ -29,10 +29,10 @@ public class SpecialObject {
         return posx;
     }
     public int getPosy(){
-        return posx;
+        return posy;
     }
-    public int getType(){
-        return posx;
+    public String getType(){
+        return type;
     }
             
 }

@@ -121,9 +121,18 @@ public class Map {
             objects.put(object.getId(), object);
         }
     }
+    
+    public void removeSpecialObjects(){
+        objects.clear();
+    }
 
     public Long getInitalTime() {
         return initialTime;
+    }
+    
+    public void setFinalToInitialTime(){
+        initialTime=finalTime;
+        finalTime=0;
     }
 
     public Long getFinalTime() {

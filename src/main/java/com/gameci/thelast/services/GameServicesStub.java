@@ -99,9 +99,9 @@ public class GameServicesStub implements GameServices {
     }
     
     @Override
-    public void removeSpecialObjectToMap(int idGame,SpecialObject object){
+    public void removeSpecialObjectsToMap(int idGame){
         if(games.containsKey(idGame)){
-            games.remove(object.getId());
+            games.get(idGame).removeSpecialObjects();
         }
     }
 

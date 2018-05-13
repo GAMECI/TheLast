@@ -11,6 +11,14 @@ var alReady = false;
 var alReadyZombie=false;
 
 
+
+var addObject= function(event){
+    alert(event);
+    alert(event.type)
+    $("#specialObject").addSprite("heartUp",{width:35, height:32, animation:specialObject[event.type], posx: event.posx,posy:event.posy});
+};
+
+
 var addPlayer = function (event) {
     $("#shieldHUD").remove();
     $("#overlay").append("<div id='shieldHUD' style='background-color:"+event.color+" ; height:113px; width:28.6%; align:center;background-image: url(/js/player/bar/"+event.healt+"/"+event.ammo+".png);'><h2 style='position:absolute; left: 230px; top: 36px;'>"+playerName+"</h2></div>")
@@ -38,16 +46,13 @@ var addZombie= function(event){
 
 
 
-var addObject= function (event){
-    $("#specialObject").addSprite("heartUp",{width:35, height:32, animation:specialObject["moveUp"], posx: event.posx,posy:event.posy});
-    $("#specialObject").addSprite("heartDown",{width:35, height:32, animation:specialObject["moveDown"], posx:event.posx,posy:event.posy});
-}
 
 
 
 
 
-<$(function () {
+
+$(function () {
 
 
     //Animation declaration
@@ -88,8 +93,8 @@ var addObject= function (event){
 	
 
     //Special Object
-    specialObject["moveUp"] = new $.gQ.Animation({imageURL:"./js/specialObject/GleefulDismalBluefintuna-max-1mb-0.png",numberOfFrame: 8, delta: 26, rate: 60, type: $.gQ.ANIMATION_VERTICAL})
-    specialObject["moveDown"] = new $.gQ.Animation({imageURL:"./js/specialObject/GleefulDismalBluefintuna-max-1mb-1.png",numberOfFrame: 8, delta: 26, rate: 60, type: $.gQ.ANIMATION_VERTICAL})
+    specialObject["medicine"] = new $.gQ.Animation({imageURL:"./js/specialObject/medicine.png"})
+    specialObject["ammo"] = new $.gQ.Animation({imageURL:"./js/specialObject/ammo.png"})
     //Initialize the game
     $("#playground").playground({height: PLAYGROUND_HEIGHT, width: PLAYGROUND_WIDTH})
 
