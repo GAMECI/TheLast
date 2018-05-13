@@ -17,9 +17,7 @@ var addObject= function(event){
 };
 
 
-var addPlayer = function (event) {
-    $("#shieldHUD").remove();
-    $("#overlay").append("<div id='shieldHUD' style='background-color:"+event.color+" ; height:113px; width:28.6%; align:center;background-image: url(/js/player/bar/"+event.healt+"/"+event.ammo+".png);'><h2 style='position:absolute; left: 230px; top: 36px;'>"+playerName+"</h2></div>")
+var addPlayer = function (event) {    
     if ($("#" + event.name).val() != undefined)
         $("#" + event.name).remove();
     if (event.status == "up" || event.status == "down") {
@@ -173,6 +171,8 @@ $(function () {
         if(alReady){
             var playerposx = $("#"+playerName).x();
             var playerposy = $("#"+playerName).y();
+            $("#shieldHUD").remove();
+            $("#overlay").append("<div id='shieldHUD' style='background-color:"+warrior.color+" ; height:113px; width:28.6%; align:center;background-image: url(/js/player/bar/"+warrior.healt+"/"+warrior.ammo+".png);'><h2 style='position:absolute; left: 230px; top: 36px;'>"+playerName+"</h2></div>")        
             switch(e.keyCode){
                 case 32: //this is shoot (space)
                     //shoot missile here

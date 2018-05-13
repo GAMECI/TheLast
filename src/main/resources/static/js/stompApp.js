@@ -87,8 +87,8 @@ var app = (function () {
 
         publishPlayer: function (posx, posy, color, name, status) {
             if (stompClient != null) {
-                var ammo = 21;
-                var healt = 75;
+                var ammo = 22;
+                var healt = 100;
                 var score = 0;
                 var x = posx;
                 var y = posy;
