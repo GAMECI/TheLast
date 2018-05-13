@@ -6,10 +6,12 @@ var bullets = new Array();
 var playerName;
 
 var playerAnimation= new Array();
+var zombieAnimation= new Array();
+var specialObject= new Array();
 var alReady=false;
 var alReadyZombie=false;
 var gameOver = false;
-var SPEED_ZOMBIE = 100;
+var SPEED_ZOMBIE = 1;
 var zombies = {};
 var numZombies = 0;
 
@@ -107,37 +109,7 @@ $(function () {
 	
 	$.playground().registerCallback(function(){		
 		if(!gameOver){					
-			app.updateZombie();			
-			/**if(numZombies == 1){
-				$(".tres").each(function(){
-					var posZx = $(this).posx();
-					var posZy = $(this).posy();
-					
-					var px = $("#"+playerName).x();
-					var py = $("#"+playerName).y();
-					
-					if(py > posZy){
-						$(this).posy(10, true);
-						statusZ = "down";							
-					}
-					if(py < posZy){
-						$(this).posy(-10, true);
-						statusZ = "up"						
-					}
-					if(py == posZy){
-						if(px > posZx){
-							statusZ = "right";
-							$(this).posx(10, true);
-							
-						}
-						if(px < posZx){
-							statusZ = "left";							
-							$(this).posx(-10, true);
-						}							
-					}																				
-					app.updateZombie($(this).id(), $(this).posx(), $(this).posy(), statusZ);			
-				});													
-			}**/
+			app.moveZombie();						
 		}	
 	}, SPEED_ZOMBIE);	
 
@@ -152,13 +124,14 @@ $(function () {
                 if (ctrl[i].checked) {
                     var color = ctrl[i].value;
                 }
+			}
 
-   $("#index").remove();
+			$("#index").remove();
                 setTimeout(function (){                    
 					app.publishPlayer(70,60,color,playerName,"idle");
-					for(i=0; i<1;i++){						
+					for(i=0; i<3;i++){						
 						numZombies+=1;
-						app.publishZombie(i,100,100,"idle")
+						app.publishZombie(i,100+i*(100),100+i*100,"idle")
 					}
                 },800);
             })
@@ -201,3 +174,4 @@ $(function () {
         }
     });
 });
+

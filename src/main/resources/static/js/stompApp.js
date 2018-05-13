@@ -1,11 +1,13 @@
 var connected = false;
 var warrior;
-var zombie;
+var zombie1;
+var zombie2;
+var zombie3;
 var zombiesList = new Array();
 
 var app = (function () {
-	
-	
+
+
     var stompClient = null;
     var idGame = 0;
 
@@ -20,25 +22,25 @@ var app = (function () {
             this.status = status;
         }
     }
-    
+
     class Object {
-        contructor(x,y,type,id){
-            this.x=x;
-            this.y=y;
-            this.type=type;
+        contructor(x, y, type, id) {
+            this.x = x;
+            this.y = y;
+            this.type = type;
         }
     }
-    
-    class Zombie{		
-        constructor(id, healt,posx,posy,status){
-            this.id=id;
-            this.healt=healt;
-            this.posx=posx;
-            this.posy=posy;		
-            this.status=status;			
-        }		
+
+    class Zombie {
+        constructor(id, healt, posx, posy, status) {
+            this.id = id;
+            this.healt = healt;
+            this.posx = posx;
+            this.posy = posy;
+            this.status = status;
+        }
     }
-    
+
     var connectAndSubscribe = function (idG) {
         idGame = idG;
         console.info('Connecting to WS...');
@@ -71,13 +73,61 @@ var app = (function () {
                 }
 
             });
-            stompClient.subscribe('/topic/zombie.'+idG, function (event){				
-                var jsonEvent = JSON.parse(event.body);				
+            stompClient.subscribe('/topic/zombie.' + idG, function (event) {
+                var jsonEvent = JSON.parse(event.body);
                 addZombie(jsonEvent);
-				
-            });		
+
+            });
             connected = true;
         });
+
+    };
+
+    var updateZombie = function (zombie) {
+        if (stompClient != null) {
+            /**if(zombiesList.length == 1){					
+             zombiesList[idz].posx = xz;
+             zombiesList[idz].posy = xy;
+             zombiesList[idz].status = sz;
+             stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombiesList[idz]));			
+             }**/
+
+            //zombiesList.forEach(function (e, i, zombiesList){																			
+            if (warrior.y > zombie.posy) {
+                zombie.posy += 1;
+                zombie.status = "down";
+                //e.posy += 1;
+                //e.status = "down";
+                console.log("Tiene que bajar");
+            }
+            if (warrior.y < zombie.posy) {
+                zombie.posy -= 1;
+                zombie.status = "up";
+                //e.posy -= 1;
+                //e.status = "up"
+                console.log("Tiene que subir");
+            }
+            if (warrior.y == zombie.posy) {
+                if (warrior.x > zombie.posx) {
+                    zombie.posx += 1;
+                    zombie.status = "right";
+                    //e.status = "right";
+                    //e.posx += 1;								
+                    console.log("Tiene que coger a la izquierda");
+                }
+                if (warrior.x < zombie.posx) {
+                    zombie.posx -= 1;
+                    zombie.status = "left";
+                    //e.status = "left";								
+                    //e.posx -= 1;
+                    console.log("Tiene que coger a la derecha");
+                }
+
+            }
+            stompClient.send("/app/zombie." + idGame, {}, JSON.stringify(zombie));
+
+
+        }
 
     };
 
@@ -97,83 +147,60 @@ var app = (function () {
                 var x = posx;
                 var y = posy;
                 warrior = new Warrior(name, healt, color, score, x, y, status);
-                try{
+                try {
                     stompClient.send("/app/player." + idGame, {}, JSON.stringify(warrior));
-                }catch(error){
+                } catch (error) {
                     alert("error");
                 }
             }
 
         },
 
-				
-	publishZombie: function(idZom, posx,posy,status){						
-            if(stompClient != null){
-                var healt=100;                
-                var x=posx;
-                var y=posy;           
+        publishZombie: function (idZom, posx, posy, status) {
+            if (stompClient != null) {
+                var healt = 100;
+                var x = posx;
+                var y = posy;
 
-				var id=idZom;	
-				zombie = new Zombie(id, healt,posx,posy,status);								
-				try{
-					stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombie));			
-					zombiesList.push(zombie);				
-				}catch(error){
-					alert(error);
-				}
-            }										
-        },
-		
-		updateZombie: function(){			
-            if(stompClient != null){
-				/**if(zombiesList.length == 1){					
-					zombiesList[idz].posx = xz;
-					zombiesList[idz].posy = xy;
-					zombiesList[idz].status = sz;
-					stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombiesList[idz]));			
-				}**/
-				if(zombiesList.length == 3){					
-					//zombiesList.forEach(function (e, i, zombiesList){														
-					for(var i =0;i<1;i++){						
-						if(warrior.y > zombiesList[i].posy){
-							zombiesList[i].posy +=1;
-							zombiesList[i].status = "down";
-							//e.posy += 1;
-							//e.status = "down";
-							console.log("Tiene que bajar");
-						}
-						if(warrior.y < zombiesList[i].posy){
-							zombiesList[i].posy -=1;
-							zombiesList[i].status = "up";
-							//e.posy -= 1;
-							//e.status = "up"
-							console.log("Tiene que subir");
-						}
-						if(warrior.y == zombiesList[i].posy){
-							if(warrior.x > zombiesList[i].posx){
-								zombiesList[i].posx +=1;
-								zombiesList[i].status = "right";
-								//e.status = "right";
-								//e.posx += 1;								
-								console.log("Tiene que coger a la izquierda");
-							}
-							if(warrior.x < zombiesList[i].posx){
-								zombiesList[i].posx -=1;
-								zombiesList[i].status = "left";
-								//e.status = "left";								
-								//e.posx -= 1;
-								console.log("Tiene que coger a la derecha");
-							}	
-							
-						}
-						stompClient.send("/app/zombie."+idGame,{},JSON.stringify(zombiesList[i]))	;			
-					};										
-				}
-			}																																																													                                        
-		
-        },
-        
+                var id = idZom;
+                if (zombiesList.length == 0) {
+                    zombie1 = new Zombie(id + warrior.name, healt, posx, posy, status);
+                    try {
+                        stompClient.send("/app/zombie." + idGame, {}, JSON.stringify(zombie1));
+                        zombiesList.push(zombie1);
+                    } catch (error) {
+                        alert(error);
+                    }
+                } else if (zombiesList.length == 1) {
+                    zombie2 = new Zombie(id + warrior.name, healt, posx, posy, status);
+                    try {
+                        stompClient.send("/app/zombie." + idGame, {}, JSON.stringify(zombie2));
+                        zombiesList.push(zombie2);
+                    } catch (error) {
+                        alert(error);
+                    }
+                } else {
+                    zombie3 = new Zombie(id + warrior.name, healt, posx, posy, status);
+                    try {
+                        stompClient.send("/app/zombie." + idGame, {}, JSON.stringify(zombie3));
+                        zombiesList.push(zombie3);
+                    } catch (error) {
+                        alert(error);
+                    }
 
+                }
+            }
+        },
+
+        moveZombie: function (zombie) {
+            if (zombiesList.length == 3) {
+                updateZombie(zombie1);
+                updateZombie(zombie2);
+				updateZombie(zombie3);
+            }
+
+
+        },
 
         updatePlayer: function (posx, posy, status) {
             if (stompClient != null) {
@@ -191,12 +218,12 @@ var app = (function () {
             }
             setConnected(false);
             console.log("Disconnected");
-        }					
-    };				
+        }
+    };
 
 })();
 
 
-	
-	
+
+
 
