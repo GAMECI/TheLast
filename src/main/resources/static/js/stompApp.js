@@ -6,7 +6,6 @@ var app = (function () {
 
 
     var stompClient = null;
-    var stompClientB = null;
     var idGame = 0;
 
     class Warrior {
@@ -48,10 +47,7 @@ var app = (function () {
 
             });
             
-            stompClient.subscribe('/topic/bullet.'+idG, function(event){
-                var jsonEvent = JSON.parse(event.body);
-                addBullet(jsonEvent);
-            });
+            stompClient.subscribe('/topic/bullet.'+idG, function(event){});
             
             connected = true;
         });
@@ -63,7 +59,6 @@ var app = (function () {
     return {
 
         init: function (idG) {
-            //websocket connection
             connectAndSubscribe(idG);
 
 
@@ -82,17 +77,9 @@ var app = (function () {
                 }
             }                        
         },
-        updateBullet: function (posx, posy) {
-            if (stompClient != null) {
-                bullet.x = posx;
-                bullet.y = posy;
-                stompClientB.send("/app/bullet." + idGame, {}, JSON.stringify(bullet));
-            }
-
-        },
         updateSpecificBullet: function (idB,posx, posy) {
-            for(var i in bullets){
-                if(i.id== idB){
+            for( i = 0; i < bullets.length; i++){
+                if(bullets[i].id == idB){
                     if (stompClient != null) {                
                         bullets[i].x = posx;
                         bullets[i].y = posy;
@@ -100,8 +87,6 @@ var app = (function () {
                     }                    
                 }                                
             }
-            
-
         },
         publishPlayer: function (posx, posy, color, name, status) {
             if (stompClient != null) {
@@ -143,7 +128,6 @@ var app = (function () {
         disconnect: function () {
             if (stompClient !== null) {
                 stompClient.disconnect();
-                stompClientB.disconnect();
             }
             setConnected(false);
             console.log("Disconnected");

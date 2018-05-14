@@ -135,13 +135,6 @@ $(function () {
                                                 app.updateSpecificBullet(key,$(this).x(), $(this).y());
                                             }                                                     
                                         }
-                                        
-                                        
-                                        
-
-                                        
-					//$(this).x(BULLET_SPEED, true);
-					//Test for collisions
 					var collided ;
                                         for (i = 0; i < playersNames.length; i++ ){
                                             collided = $(this).collision("#players,#"+playersNames[i]); 
@@ -152,8 +145,7 @@ $(function () {
                                                         updateHealth(warriors[j]);
                                                         $(this).remove();
                                                     }
-                                                }
-                                                
+                                                }                                                
                                             }
                                         }
                                         

@@ -31,20 +31,20 @@ public class stompController {
     private GameServicesStub gss = new GameServicesStub();
     
     @MessageMapping("/bullet.{idGame}")
-    public void handleBullet(Bullet bullet, @DestinationVariable int idGame) throws GameServicesException{
-        boolean first = false;
-        synchronized (gss) {
-            Map game = gss.getMap(idGame);
-            if (game == null) {
-                gss.createNewMap(idGame);
-                game = gss.getMap(idGame);
-                first = true;
-            }
-}
+    public void handleBullet(Bullet bullet, @DestinationVariable int idGame) throws GameServicesException{        
         try{
             synchronized(gss){
-                
-                addNewBullet(bullet, idGame);
+                Map game = gss.getMap(idGame);
+                if (game == null) {
+                    gss.createNewMap(idGame);
+                    game = gss.getMap(idGame);
+                }
+                Collection<Bullet> values = game.getBullets();               
+                if(values.contains(bullet)){
+                    updateBullet(bullet, idGame);
+                }else{
+                    addNewBullet(bullet, idGame);
+                }                
                 msgt.convertAndSend("/topic/bullet." + idGame, bullet);
             }
         }catch(Exception e){
