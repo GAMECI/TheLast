@@ -43,7 +43,7 @@ public class stompController {
 }
         try{
             synchronized(gss){
-                Map game = gss.getMap(idGame);            
+                
                 addNewBullet(bullet, idGame);
                 msgt.convertAndSend("/topic/bullet." + idGame, bullet);
             }

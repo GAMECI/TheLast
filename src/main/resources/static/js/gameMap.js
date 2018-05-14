@@ -121,7 +121,6 @@ $(function () {
 						$(this).remove();
 						return;
 					}                                        
-                                        var conta = 0;
                                         for(key in bulletsD){                                            
                                             if(key === this.id){
                                                 if (bulletsD[key] == "left") {                                                       
@@ -133,10 +132,8 @@ $(function () {
                                                 } else {
                                                     $(this).y(BULLET_SPEED, true);
                                                 }
-                                                //app.updateSpecificBullet(conta,$(this).x(), $(this).y());
-                                                app.updateBullet($(this).x(), $(this).y());
-                                            }                                               
-                                            conta++;                                            
+                                                app.updateSpecificBullet(key,$(this).x(), $(this).y());
+                                            }                                                     
                                         }
                                         
                                         

@@ -48,7 +48,7 @@ var app = (function () {
 
             });
             
-            stompClientB.subscribe('/topic/bullet.'+idG, function(event){
+            stompClient.subscribe('/topic/bullet.'+idG, function(event){
                 var jsonEvent = JSON.parse(event.body);
                 addBullet(jsonEvent);
             });
