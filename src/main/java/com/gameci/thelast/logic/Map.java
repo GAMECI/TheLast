@@ -121,6 +121,9 @@ public class Map {
             objects.put(object.getId(), object);
         }
     }
+    public ConcurrentHashMap<Integer, SpecialObject> getSpecialsObject(){
+        return objects;
+    }
     
     public void removeSpecialObjects(){
         objects.clear();

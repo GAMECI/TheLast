@@ -5,6 +5,7 @@
  */
 package com.gameci.thelast.restController;
 
+import com.gameci.thelast.logic.Map;
 import com.gameci.thelast.services.GameServices;
 import com.gameci.thelast.services.GameServicesException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,17 @@ public class restController {
     public ResponseEntity<?> deleteSpecialObject(@PathVariable int idGame) throws GameServicesException{
         gss.removeSpecialObjectsToMap(idGame);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @RequestMapping(method= RequestMethod.GET,path="/{idGame}/specialObject")
+    public ResponseEntity<?> getSpecialObject(@PathVariable int idGame) throws GameServicesException{
+       Map map=gss.getMap(idGame);
+       ResponseEntity<?> resp;
+       if(map != null){
+           resp= new ResponseEntity<>(map.getSpecialsObject(),HttpStatus.OK);
+       }else{
+           resp= new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       } 
+       return resp;
     }
 }

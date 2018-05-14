@@ -11,7 +11,6 @@ var alReady = false;
 var alReadyZombie=false;
 
 
-
 var addObject= function(event){
     $("#specialObject").addSprite("object"+event.type,{width:35, height:32, animation:specialObject[event.type], posx: event.posx,posy:event.posy});
 };
@@ -50,7 +49,7 @@ var testCollision = function(name){
             }else if(warrior.ammo<22){
                 warrior.ammo=warrior.ammo+1;
             }
-            gameController.deleteSpecialObject()
+            gameController.deleteSpecialObject();
             $("#"+this.id).remove();
         }
     });
@@ -130,7 +129,8 @@ $(function () {
 
         playerName = $('#idName').val();
         $.playground().startGame(function () {
-            initGame($('#idGame').val());
+            var idGame=$('#idGame').val()
+            initGame(idGame);
             document.getElementById("overlay").setAttribute("align","left");    
             $("#overlay").append("<br><div id='shieldHUD' style='background-color:"+color+" ; height:113px; width:28.6%; align:center;background-image: url(/js/player/bar/100/22.png);'><h2 style='position:absolute; left: 230px; top: 36px;'>"+playerName+"</h2></div>")
         });

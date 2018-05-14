@@ -2,12 +2,13 @@ var connected = false;
 var warrior;
 var zombie;
 var zombiesList = new Array();
+var idGame;
 
 var app = (function () {
 	
 	
     var stompClient = null;
-    var idGame = 0;
+
 
     class Warrior {
         constructor(name, healt, color, score, x, y, status,ammo) {
