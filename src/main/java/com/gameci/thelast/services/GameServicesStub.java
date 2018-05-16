@@ -108,4 +108,13 @@ public class GameServicesStub implements GameServices {
         }
     }
 
+    @Override
+    public void removeWarriorOfMap(String warriorName, int idGame) throws GameServicesException {
+        if(games.containsKey(idGame)){
+            Map mapSelected =games.get(idGame);
+            mapSelected.deleteWarrior(warriorName);
+            mapSelected.deleteZombies(warriorName);
+        }
+    }
+
 }

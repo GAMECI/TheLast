@@ -4,38 +4,51 @@ var PLAYGROUND_WIDTH = 1500;
 var BULLET_SPEED =  10;
 var bullets = new Array();
 var playerName;
+
+var playerAnimation= new Array();
 var zombieAnimation= new Array();
-var playerAnimation = new Array();
-var specialObject = new Array();
-var alReady = false;
+var specialObject= new Array();
+var alReady=false;
 var alReadyZombie=false;
+var gameOver = false;
+var SPEED_ZOMBIE = 1;
+var zombies = {};
+var numZombies = 0;
+var lastAtack=undefined;
+
+
+var removeCharacters=function(event){
+    $("#" + event.name).remove();
+    for(i=0;i<3;i++){
+            $("#" +i+event.name+"zombie").remove();  
+    }
+}
 
 
 var addObject= function(event){
-    $("#specialObject").addSprite("object"+event.type,{width:35, height:32, animation:specialObject[event.type], posx: event.posx,posy:event.posy});
+    $("#specialObject").addSprite("object"+event[0].type,{width:35, height:32, animation:specialObject[event[0].type], posx: event[0].posx,posy:event[0].posy});
 };
 
 
 var addPlayer = function (event) {    
     if ($("#" + event.name).val() != undefined)
         $("#" + event.name).remove();
-    if (event.status == "up" || event.status == "down") {
-        $("#players").addSprite(event.name, {width: 39, height: 53, animation: playerAnimation[event.status], posx: event.x, posy: event.y});
-    } else {
-        $("#players").addSprite(event.name, {width: 53, height: 39, animation: playerAnimation[event.status], posx: event.x, posy: event.y});
-    }
-
-    testCollision(event.name);
-
+        if (event.status == "up" || event.status == "down") {
+            $("#players").addSprite(event.name, {width: 39, height: 53, animation: playerAnimation[event.status], posx: event.x, posy: event.y});
+        } else {
+            $("#players").addSprite(event.name, {width: 53, height: 39, animation: playerAnimation[event.status], posx: event.x, posy: event.y});
+        }
     alReady = true;
 };
 
 
 var addZombie= function(event){		    
+	if($("#"+event.id+"zombie").val()!=undefined)
+        $("#"+event.id+"zombie").remove();
     if(event.status=="up" || event.status=="down"){        		
-		$("#zombies").addSprite(event.id,{width:39,height:53,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
+		$("#zombies").addSprite(event.id+"zombie",{width:65,height:70,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
     }else{        		
-		$("#zombies").addSprite(event.id,{width:65,height:70,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
+		$("#zombies").addSprite(event.id+"zombie",{width:65,height:70,animation:zombieAnimation[event.status],posx:event.posx, posy:event.posy});
     }    
     alReadyZombie=true;
 };
@@ -43,6 +56,7 @@ var addZombie= function(event){
 
 var testCollision = function(name){
     var coll = $("#"+name).collision().each(function(){
+
         if(this.id=="objectmedicine" || this.id=="objectammo"){
             if(this.id=="objectmedicine" && warrior.healt<100){
                 warrior.healt=warrior.healt+25;
@@ -50,11 +64,28 @@ var testCollision = function(name){
                 warrior.ammo=warrior.ammo+1;
             }
             gameController.deleteSpecialObject();
+            app.updateObject();
             $("#"+this.id).remove();
+        }else if((this.id).includes("zombie") && warrior.healt>0){
+            if(this.id != lastAtack){
+                warrior.healt-=25;
+                lastAtack=this.id;    
+            }
+            
+        }else if(warrior.healt==0){
+            finishGame();
         }
     });
     
 };
+
+var finishGame=function(){
+    alert("Game Over");
+    gameController.finishGame(function(){
+        app.sendGameOver();    
+        location.reload();
+    });
+}
 
 
 
@@ -118,11 +149,13 @@ $(function () {
     //Intialize the background
 
 
-    $("#background").addSprite("background3", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT, animation: background3});
-
-    $.loadCallback(function(percent){
-        $("#loadingBar").width(400*percent);
-});
+    $("#background").addSprite("background3", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT, animation: background3});	
+	$.playground().registerCallback(function(){		
+		if(!gameOver){					
+			app.moveZombie();
+            testCollision(playerName);						
+		}	
+	}, SPEED_ZOMBIE);	
 
 
     $("#start").click(function () {
@@ -161,7 +194,7 @@ $(function () {
         setTimeout(function(){
             app.publishPlayer(122,416,color,playerName,"idle");
             for(i=0; i<3;i++){                      
-                app.publishZombie(i,500,500,"idle")
+                app.publishZombie(i,500*i,500*i,"idle")
             }    
         },200);
     }
@@ -205,3 +238,4 @@ $(function () {
         }
     });
 });
+

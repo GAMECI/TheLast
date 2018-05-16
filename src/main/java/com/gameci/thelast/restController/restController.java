@@ -48,4 +48,35 @@ public class restController {
        } 
        return resp;
     }
+    
+    @RequestMapping(method= RequestMethod.GET,path="/{idGame}/{playerName}")
+    public ResponseEntity<?> getPlayer(@PathVariable int idGame,@PathVariable String playerName) throws GameServicesException{
+       Map map=gss.getMap(idGame);
+       ResponseEntity<?> resp;
+       if(map != null){
+           resp= new ResponseEntity<>(map.getWarrior(playerName),HttpStatus.OK);
+       }else{
+           resp= new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       } 
+       return resp;
+    }
+    
+    @RequestMapping(method= RequestMethod.GET,path="/{idGame}/zombies")
+    public ResponseEntity<?> getZombies(@PathVariable int idGame) throws GameServicesException{
+       Map map=gss.getMap(idGame);
+       ResponseEntity<?> resp;
+       if(map != null){
+           resp= new ResponseEntity<>(map.getZombies(),HttpStatus.OK);
+       }else{
+           resp= new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       } 
+       return resp;
+    }
+    
+    
+    @RequestMapping(method= RequestMethod.DELETE,path="/{idGame}/{playerName}")
+    public ResponseEntity<?> deletePlayer(@PathVariable int idGame,@PathVariable String playerName) throws GameServicesException{
+        gss.removeWarriorOfMap(playerName, idGame);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
