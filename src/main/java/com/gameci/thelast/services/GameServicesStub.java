@@ -10,11 +10,14 @@ import com.gameci.thelast.logic.SpecialObject;
 import com.gameci.thelast.logic.Warrior;
 import com.gameci.thelast.logic.Zombie;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author andres
  */
+
+@Service
 public class GameServicesStub implements GameServices {
 
     private ConcurrentHashMap<Integer, Map> games;
@@ -99,9 +102,18 @@ public class GameServicesStub implements GameServices {
     }
     
     @Override
-    public void removeSpecialObjectToMap(int idGame,SpecialObject object){
+    public void removeSpecialObjectsToMap(int idGame){
         if(games.containsKey(idGame)){
-            games.remove(object.getId());
+            games.get(idGame).removeSpecialObjects();
+        }
+    }
+
+    @Override
+    public void removeWarriorOfMap(String warriorName, int idGame) throws GameServicesException {
+        if(games.containsKey(idGame)){
+            Map mapSelected =games.get(idGame);
+            mapSelected.deleteWarrior(warriorName);
+            mapSelected.deleteZombies(warriorName);
         }
     }
 

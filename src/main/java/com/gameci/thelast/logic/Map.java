@@ -8,6 +8,7 @@ package com.gameci.thelast.logic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -89,14 +90,14 @@ public class Map {
     }
 
     public void addZombie(Zombie zombie) {
-        if (!warriors.containsKey(zombie.getId())) {
+        if (!zombies.containsKey(zombie.getId())) {
             zombies.put(zombie.getId(), zombie);
         }
     }
 
-    public void deleteZombie(String id) {
-        if (warriors.containsKey(id)) {
-            warriors.remove(id);
+    public void deleteZombies(String warriorName) {       
+        for(int i=0;i<3;i++){
+            zombies.remove(Integer.toString(i)+warriorName);
         }
     }
 
@@ -121,9 +122,21 @@ public class Map {
             objects.put(object.getId(), object);
         }
     }
+    public ConcurrentHashMap<Integer, SpecialObject> getSpecialsObject(){
+        return objects;
+    }
+    
+    public void removeSpecialObjects(){
+        objects.clear();
+    }
 
     public Long getInitalTime() {
         return initialTime;
+    }
+    
+    public void setFinalToInitialTime(){
+        initialTime=finalTime;
+        finalTime=0;
     }
 
     public Long getFinalTime() {

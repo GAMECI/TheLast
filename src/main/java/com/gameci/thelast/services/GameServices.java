@@ -19,6 +19,8 @@ public interface GameServices {
     void createNewMap(int idGame) throws GameServicesException;
 
     void addNewWarriorToMap(Warrior warrior, int idGame) throws GameServicesException;
+    
+    void removeWarriorOfMap(String warriorName, int idGame) throws GameServicesException;
 
     void updateWarrior(Warrior warrior, int idGame) throws GameServicesException;
 
@@ -30,6 +32,6 @@ public interface GameServices {
 
     void putSpecialObjectInMap(int idGame, SpecialObject object) throws GameServicesException;
 
-    void removeSpecialObjectToMap(int idGame, SpecialObject object) throws GameServicesException;
+    void removeSpecialObjectsToMap(int idGame) throws GameServicesException;
 
 }

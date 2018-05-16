@@ -17,12 +17,13 @@ public class Warrior {
     private int x;
     private int y;
     private String status;
+    private int ammo;
     
     public Warrior(){
         
     }
     
-    public Warrior(String name,int healt,String color,int score,int x,int y,String status){
+    public Warrior(String name,int healt,String color,int score,int x,int y,String status,int ammo){
         this.name=name;
         this.healt=healt;
         this.color=color;
@@ -30,6 +31,7 @@ public class Warrior {
         this.x=x;
         this.y=y;
         this.status=status;
+        this.ammo=ammo;
     }
     
     public void shoot(){
@@ -85,6 +87,13 @@ public class Warrior {
     }
     public void setY(int y){
         this.y=y;
+    }
+    
+    public int getAmmo(){
+        return ammo;
+    }
+    public void setAmmo(int ammo){
+        this.ammo=ammo;
     }
     public String toString(){
         return "name= "+name+" healt= "+healt+" color= "+color+" score= "+score+" x= "+x+" y= "+y+" status= "+status;

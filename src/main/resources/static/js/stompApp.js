@@ -4,15 +4,16 @@ var zombie1;
 var zombie2;
 var zombie3;
 var zombiesList = new Array();
+var idGame;
 
 var app = (function () {
 
 
     var stompClient = null;
-    var idGame = 0;
+
 
     class Warrior {
-        constructor(name, healt, color, score, x, y, status) {
+        constructor(name, healt, color, score, x, y, status,ammo) {
             this.name = name;
             this.healt = healt;
             this.color = color;
@@ -20,6 +21,7 @@ var app = (function () {
             this.x = x;
             this.y = y;
             this.status = status;
+            this.ammo =ammo
         }
     }
 
@@ -63,38 +65,29 @@ var app = (function () {
 
             });
             stompClient.subscribe('/topic/object.' + idG, function (event) {
-                var jsonEvent = JSON.parse(event.body);
-                if (jsonEvent.ERROR != undefined) {
-                    console.log(event.ERROR);
-                    alert("A player with  the same name already exists,  please try with other name or enter in other room ")
-                    window.location.reload();
-                } else {
-                    addObject(jsonEvent);
-                }
-
+                object=gameController.getObject(function(object){
+                    addObject(object);
+                });
             });
             stompClient.subscribe('/topic/zombie.' + idG, function (event) {
                 var jsonEvent = JSON.parse(event.body);
                 addZombie(jsonEvent);
 
             });
+
+            stompClient.subscribe('/topic/gameOver.' + idG, function (event) {
+                var jsonEvent = JSON.parse(event.body);
+                removeCharacters(jsonEvent);
+
+            });
             connected = true;
         });
 
     };
-	
-	var attack = function(){				
-		warrior.healt -=25;
-		stompClient.send("/app/player." + idGame, {}, JSON.stringify(warrior));				
-	}
 
     var updateZombie = function (zombie) {
 
 		if (stompClient != null) {            
-		
-			if(warrior.x == zombie.posx){
-				attack();				
-			}
 			
             if (warrior.y > zombie.posy) {
                 zombie.posy += 1;
@@ -145,12 +138,13 @@ var app = (function () {
 
         publishPlayer: function (posx, posy, color, name, status) {
             if (stompClient != null) {
+                var ammo = 22;
                 var healt = 100;
                 var score = 0;
                 var x = posx;
                 var y = posy;
-                warrior = new Warrior(name, healt, color, score, x, y, status);
-                try {
+                warrior = new Warrior(name, healt, color, score, x, y, status,ammo);
+                try{
                     stompClient.send("/app/player." + idGame, {}, JSON.stringify(warrior));
                 } catch (error) {
                     alert("error");
@@ -215,6 +209,17 @@ var app = (function () {
 
         },
 
+         updateObject: function () {
+            if (stompClient != null) {
+                stompClient.send("/topic/object." + idGame, {}, {});
+            }
+
+        },
+
+        sendGameOver : function(){
+             stompClient.send("/topic/gameOver." + idGame, {}, JSON.stringify(warrior) );
+        },
+
         disconnect: function () {
             if (stompClient !== null) {
                 stompClient.disconnect();
@@ -222,6 +227,7 @@ var app = (function () {
             setConnected(false);
             console.log("Disconnected");
         }
+
     };
 
 })();

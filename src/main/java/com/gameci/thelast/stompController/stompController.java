@@ -10,6 +10,7 @@ import com.gameci.thelast.logic.SpecialObject;
 import com.gameci.thelast.logic.Warrior;
 
 import com.gameci.thelast.logic.Zombie;
+import com.gameci.thelast.services.GameServices;
 
 import com.gameci.thelast.services.GameServicesException;
 import com.gameci.thelast.services.GameServicesStub;
@@ -31,9 +32,16 @@ public class stompController {
 
     @Autowired
     SimpMessagingTemplate msgt;
-
-    private GameServicesStub gss = new GameServicesStub();
+    
+    @Autowired
+    private GameServices gss;
+    
     private AtomicInteger objectInstance = new AtomicInteger();
+    private boolean enable = true;
+    private final static int MINVALX=35;
+    private final static int MINVALY=175;
+    private final static int MAXVALX=1445;
+    private final static int MAXVALY=751;
 
     @MessageMapping("/player.{idGame}")
     public void handlePlayerEvent(Warrior warrior, @DestinationVariable int idGame) throws GameServicesException {
@@ -43,7 +51,6 @@ public class stompController {
             if (game == null) {
                 System.out.println(game + warrior.getName());
                 gss.createNewMap(idGame);
-                game = gss.getMap(idGame);
                 first = true;
 
             }
@@ -103,22 +110,13 @@ public class stompController {
     }
 
     public void addNewWarrior(boolean first, Warrior warrior, int idGame) throws GameServicesException {
-        boolean possible = false;
-        Random rm = new Random();
         Map game = gss.getMap(idGame);
-        int minVal = 60;
-        int maxVal = 200;
-        int newX = minVal;
-        int newY = minVal;
         if (!first) {
             loadWarriors(idGame, game);
             int[] positions = posCalculator(idGame);
-
             warrior.setX(positions[0]);
             warrior.setY(positions[1]);
-            first = true;
         }
-
         gss.addNewWarriorToMap(warrior, idGame);
     }
 
@@ -131,15 +129,13 @@ public class stompController {
         gss.updateZombie(zombie, idGame);
     }
 
-    public void addNewZombie(boolean first, Zombie zombie, int idGame) {
-        boolean possible = false;
+    public void addNewZombie(boolean first, Zombie zombie, int idGame) throws GameServicesException {
         Map game = gss.getMap(idGame);
         if (!first) {
             loadZombies(idGame, game);
             int[] positions = posCalculator(idGame);
             zombie.setPosx(positions[0]);
             zombie.setPosy(positions[1]);
-            first = true;
         }
         gss.addNewZombieToMap(zombie, idGame);
     }
@@ -155,39 +151,39 @@ public class stompController {
         }
     }
 
-    public void addSpecialObject(int idGame) {
+    public void addSpecialObject(int idGame) throws GameServicesException {
         double deltaTime = (System.currentTimeMillis() - gss.getMap(idGame).getInitalTime()) / 60000.0;
-        int minVal = 60;
-        int maxVal = 200;
         Random rm = new Random();
-        int newX = minVal;
-        int newY = minVal;
-        boolean possible = false;
-        if (deltaTime >= objectInstance.get() + 1) {
-            int[] positions = posCalculator(idGame);
-            objectInstance.getAndAdd(1);
-            SpecialObject object = new SpecialObject(positions[0], positions[1], "medicine", objectInstance.get());
-            gss.putSpecialObjectInMap(idGame, object);
-            msgt.convertAndSend("/topic/object." + idGame, object);
+        int typeOfObject=rm.nextInt(2);
+        String[] types = {"medicine","ammo"};
+        if (deltaTime >= 1) {
+            if((int)deltaTime%2!=0 && enable){
+                int[] positions = posCalculator(idGame);
+                SpecialObject object = new SpecialObject(positions[0], positions[1], types[typeOfObject], objectInstance.get());
+                gss.putSpecialObjectInMap(idGame, object);
+                System.out.println(object.toString());
+                msgt.convertAndSend("/topic/object." + idGame, object);
+                enable=false;
+            }else if((int)deltaTime%2==0){
+                enable=true;
+            }
         }
 
     }
 
-    public int[] posCalculator(int idGame) {
+    public int[] posCalculator(int idGame) throws GameServicesException {
         int[] positions = new int[2];
-        int minVal = 60;
-        int maxVal = 200;
         Random rm = new Random();
-        positions[0] = minVal;
-        positions[1] = minVal;
+        positions[0] = MINVALX;
+        positions[1] = MINVALY;
         boolean possible = false;
         synchronized (gss) {
             while (!possible) {
                 boolean breakLoop = false;
-                positions[0] = rm.nextInt(maxVal) + minVal;
-                positions[1] = rm.nextInt(maxVal) + minVal;
+                positions[0] = rm.nextInt(MAXVALX-MINVALX) + MINVALX;
+                positions[1] = rm.nextInt(MAXVALY-MINVALY) + MINVALY;
                 Map game = gss.getMap(idGame);
-                Collection<Warrior> values = game.getWarriors();
+                Collection<Warrior> values = game.getWarriors();    
                 for (Warrior i : values) {
                     if (i.getX() == positions[0] && i.getY() == positions[1]) {
                         breakLoop = true;
