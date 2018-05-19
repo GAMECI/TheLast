@@ -13,15 +13,17 @@ public class Bullet {
     private String id;
     private int x;
     private int y;
+    private String direction;
     
     public Bullet(){
         
     }
     
-    public Bullet(String id,int x,int y){  
+    public Bullet(String id,int x,int y, String direction){  
         this.id = id;
         this.x=x;
         this.y=y;
+        this.direction = direction;
     }
     
     public void shoot(){
@@ -37,6 +39,9 @@ public class Bullet {
     
     public void isAlive(){
         
+    }
+    public String getDirection(){
+        return direction;
     }
     public String getId(){
         return id;
@@ -57,7 +62,10 @@ public class Bullet {
     public void setY(int y){
         this.y=y;
     }
+    public void setDirection(String direction){
+        this.direction = direction;
+    }
     public String toString(){
-        return "Id= "+id+" x= "+x+" y= "+y;
+        return "Id= "+id+" x= "+x+" y= "+y+"direction= "+direction;
     }
 }

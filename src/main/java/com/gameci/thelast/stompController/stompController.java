@@ -48,7 +48,7 @@ public class stompController {
                 msgt.convertAndSend("/topic/bullet." + idGame, bullet);
             }
         }catch(Exception e){
-        
+            e.printStackTrace();
         }
     
     }

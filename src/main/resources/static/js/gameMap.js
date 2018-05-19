@@ -14,7 +14,24 @@ var bulletCounter = 0;
 var playersNames = new Array();
 var warriors = new Array();
 
-
+var addBullet = function(event){
+    if ($("#" + event.id).val() != undefined)
+        $("#" + event.id).remove();
+    var bulletD = "";
+    if (event.direction =="idle" || event.direction == "right"){
+        bulletD = "bulletR";        
+    }else if(event.direction =="left"){
+        bulletD = "bulletL";        
+    }else if(event.direction =="up"){
+        bulletD ="bulletU";
+    }else if(event.direction == "down"){
+        bulletD ="bulletD"
+    }
+    
+    $("#bullets").addSprite(event.id,{width:47,height:47, animation:bullets[bulletD], posx:event.x,posy:event.y});                       
+    $("#"+event.id).addClass("playerBullets");
+    bulletsD[event.name] = bulletD;
+}
 var addPlayer = function (event) {
     if ($("#" + event.name).val() != undefined)
         $("#" + event.name).remove();
@@ -125,14 +142,15 @@ $(function () {
                                             if(key === this.id){
                                                 if (bulletsD[key] == "left") {                                                       
                                                     $(this).x(BULLET_SPEED * -1, true);
-                                                } else if (bulletsD[key] == "right") {
+                                                } else if (bulletsD[key] == "right" || bulletsD[key]=="idle") {
                                                     $(this).x(BULLET_SPEED, true);
                                                 } else if (bulletsD[key] == "up") {
                                                     $(this).y(BULLET_SPEED * -1, true);
                                                 } else {
                                                     $(this).y(BULLET_SPEED, true);
                                                 }
-                                                app.updateSpecificBullet(key,$(this).x(), $(this).y());
+                                         
+                                                app.updateSpecificBullet(key,$(this).x(), $(this).y(),bulletsD[key]);
                                             }                                                     
                                         }
 					var collided ;
@@ -141,6 +159,7 @@ $(function () {
                                             if(collided.length > 0){
                                                 for(j=0; j < warriors.length; j++){
                                                     if(warriors[j].name == playersNames[i]){
+                                                        bulletsD[name] = warrior.status;             
                                                         app.updateSpecificPlayer(warriors[j].x,warriors[j].y, warriors[j].status, -25, j );
                                                         updateHealth(warriors[j]);
                                                         $(this).remove();
@@ -189,23 +208,23 @@ $(function () {
             switch(e.keyCode){
                 case 32: //this is shoot (space)
                     bulletCounter = (bulletCounter + 1) % 100000;
-                    var name = "playerBullet_"+bulletCounter;                    
+                    var name = "playerBullet_"+bulletCounter+warrior.name;                    
                     if(warrior.status == "left"){                        
                         $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletL"], posx:playerposx-50,posy:playerposy});                     
                         $("#"+name).addClass("playerBullets");
-                        app.publishBullet(name,playerposx-50,playerposy);
-                    }else if(warrior.status == "right"){
-                        $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletR"], posx:playerposx+60,posy:playerposy});
+                        app.publishBullet(name,playerposx-50,playerposy,warrior.status);
+                    }else if(warrior.status == "down"){
+                        $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletD"], posx:playerposx,posy:playerposy+60});
                         $("#"+name).addClass("playerBullets");
-                        app.publishBullet(name,playerposx+60,playerposy);
+                        app.publishBullet(name,playerposx,playerposy+60,warrior.status);
                     }else if(warrior.status == "up"){
                         $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletU"], posx:playerposx,posy:playerposy-50});
                         $("#"+name).addClass("playerBullets");
-                        app.publishBullet(name,playerposx,playerposy-50);
+                        app.publishBullet(name,playerposx,playerposy-50,warrior.status);
                     }else{
-                        $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletD"], posx:playerposx,posy:playerposy+50});
+                        $("#bullets").addSprite(name,{width:47,height:47, animation:bullets["bulletR"], posx:playerposx+50,posy:playerposy});
                         $("#"+name).addClass("playerBullets");
-                        app.publishBullet(name,playerposx,playerposy+50);
+                        app.publishBullet(name,playerposx+50,playerposy,warrior.status);
                     }
                     bulletsD[name] = warrior.status;    
                     break;

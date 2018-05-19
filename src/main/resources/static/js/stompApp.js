@@ -19,10 +19,11 @@ var app = (function () {
         }
     }
     class Bullet{
-        constructor(id, x, y){
+        constructor(id, x, y, direction){
             this.id = id;
             this.x= x;
             this.y = y;
+            this.direction = direction;
         }
         
     }
@@ -47,7 +48,19 @@ var app = (function () {
 
             });
             
-            stompClient.subscribe('/topic/bullet.'+idG, function(event){});
+            stompClient.subscribe('/topic/bullet.'+idG, function(event){
+                var jsonEvent = JSON.parse(event.body);
+                if (jsonEvent.ERROR != undefined) {
+                    console.log(event.ERROR);
+                    alert("The bullet cannot be loaded")
+                    window.location.reload();                    
+                } else {
+                    alert("SE SUSCRIBIO!!!!");
+                    addBullet(jsonEvent);
+                }
+                
+                
+            });
             
             connected = true;
         });
@@ -63,12 +76,13 @@ var app = (function () {
 
 
         },
-        publishBullet: function(id, posx,posy){
+        publishBullet: function(id, posx,posy, direction){
             if(stompClient!= null){
                 var idB = id;
                 var x = posx;
                 var y = posy;
-                bullet = new Bullet(idB, x, y);
+                var dir = direction;
+                bullet = new Bullet(idB, x, y,dir);
                 bullets.push(bullet);
                 try{
                     stompClient.send("/app/bullet." + idGame, {}, JSON.stringify(bullet));
@@ -77,7 +91,7 @@ var app = (function () {
                 }
             }                        
         },
-        updateSpecificBullet: function (idB,posx, posy) {
+        updateSpecificBullet: function (idB,posx, posy, direction) {
             for( i = 0; i < bullets.length; i++){
                 if(bullets[i].id == idB){
                     if (stompClient != null) {                
