@@ -16,15 +16,6 @@ var warriors = new Array();
 var content = "The aviable games were: " ;
 var aviableGames = new Array();
 
-var modifyClient = function(){
-
-            aviableGames.push(0);
-            for(i = 0; i< aviableGames.length; i++){
-                content +=aviableGames[i]+"  "; 
-            }
-            return content;
-
-};
 
 
 var addPlayer = function (event) {

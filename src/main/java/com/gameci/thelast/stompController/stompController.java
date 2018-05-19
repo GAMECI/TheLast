@@ -27,7 +27,7 @@ public class stompController {
 
     @Autowired
     SimpMessagingTemplate msgt;
-
+    @Autowired
     private GameServicesStub gss = new GameServicesStub();
     
     @MessageMapping("/bullet.{idGame}")

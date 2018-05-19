@@ -6,7 +6,7 @@ var app = (function () {
 
 
     var stompClient = null;
-    var stompClientB = null;
+    var stompClientN = null;
     var idGame = 0;
 
     class Warrior {
@@ -27,23 +27,27 @@ var app = (function () {
         }
         
     }
-
-    var connectAndSubscribeB = function(idG){
-        idGame = idG;
-        console.info('Connecting to WS...');
-        var socket = new SockJS('/stompendpoint');
-        stompClientB = Stomp.over(socket);
-        stompClientB.connect({},function(frame){
-            stompClientB.subscribe('/topic/bullet.'+idG, function(event){
-                var jsonEvent = JSON.parse(event.body);
-                if (jsonEvent.ERROR != undefined) {
-                    console.log(event.ERROR);
-                    alert("Cannot add the current bullet")
-                    window.location.reload();
+    var getAviableGames = function(){
+        $.get("room/",
+                function (data) {
+                    var avi = "Aviable games: ";
+                    var loadedRooms = data;
+                    
+                    alert("Competitors loaded!");
+                    loadedRooms.forEach(
+                            function (number) {
+                                avi = avi + number.toString()+", ";
+                            }
+                    );
+                    return avi;
                 }
-            });
-        });        
+        );
+        
+
     };
+    
+    
+    
     var connectAndSubscribe = function (idG) {
         idGame = idG;
         console.info('Connecting to WS...');

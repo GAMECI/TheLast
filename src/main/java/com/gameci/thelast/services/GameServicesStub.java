@@ -7,8 +7,11 @@ package com.gameci.thelast.services;
 
 import com.gameci.thelast.logic.Bullet;
 import com.gameci.thelast.logic.Map;
+import com.gameci.thelast.logic.SpecialObject;
 import com.gameci.thelast.logic.Warrior;
+import com.gameci.thelast.logic.Zombie;
 import java.util.concurrent.ConcurrentHashMap;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -22,7 +25,9 @@ public class GameServicesStub implements GameServices {
     public GameServicesStub() {
         games = new ConcurrentHashMap<>();
     }
-
+    public ConcurrentHashMap<Integer, Map> getAviableGames(){
+        return games;
+    }
     @Override
     public void createNewMap(int idGame) {
         if (!games.containsKey(idGame)) {
@@ -91,6 +96,38 @@ public class GameServicesStub implements GameServices {
         }
         return game;
 
+    }    
+    
+    public void putSpecialObjectInMap(int idGame, SpecialObject object) {
+        if (games.containsKey(idGame)) {
+            games.get(idGame).addSpecialObject(object);
+        }
     }
 
+    public void addNewZombieToMap(Zombie zombie, int idGame) {
+        if (games.containsKey(idGame)) {
+            Map actualMap = games.get(idGame);
+            if (!actualMap.containsWarrior(zombie.getId())) {
+                games.get(idGame).addZombie(zombie);
+            }
+        }
+    }
+
+    public void updateZombie(Zombie zombie, int idGame) {
+        if (games.containsKey(idGame)) {
+            Map actualMap = games.get(idGame);
+            if (actualMap.containsZombie(zombie.getId())) {
+                actualMap.getZombie(zombie.getId()).setId(zombie.getId());
+                actualMap.getZombie(zombie.getId()).setHealt(zombie.getHealt());
+                actualMap.getZombie(zombie.getId()).setPosx(zombie.getPosx());
+                actualMap.getZombie(zombie.getId()).setPosy(zombie.getPosy());
+            }
+        }
+    }
+
+    public void removeSpecialObjectsToMap(int idGame) {
+        if (games.containsKey(idGame)) {
+            games.get(idGame).removeSpecialObjects();
+        }
+    }
 }

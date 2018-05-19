@@ -19,14 +19,22 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class Map {
     //Warriors into  the Map
-    ConcurrentHashMap<String,Warrior>  warriors;
-    ConcurrentHashMap<String,Bullet> bullets;
+     ConcurrentHashMap<String, Warrior> warriors;
+    ConcurrentHashMap<String, Zombie> zombies;
+    ConcurrentHashMap<String, Bullet> bullets;
+    ConcurrentHashMap<Integer, SpecialObject> objects;
     private int idGame;
-    
-    public Map(int idGame){
-        this.idGame=idGame;
-        warriors= new ConcurrentHashMap<String,Warrior>();
-        bullets= new ConcurrentHashMap<String,Bullet>();
+    long initialTime;
+    long finalTime;
+
+    public Map(int idGame) {
+        this.idGame = idGame;
+        warriors = new ConcurrentHashMap<String, Warrior>();
+        zombies = new ConcurrentHashMap<String, Zombie>();
+        objects = new ConcurrentHashMap<>();
+        initialTime = System.currentTimeMillis();
+        finalTime = System.currentTimeMillis();
+
     }
     public void addBullet(Bullet bullet){
         if(!bullets.containsKey(bullet.getId()))
@@ -89,4 +97,70 @@ public class Map {
         }
         return selectedWarrior;
     }
+    public Collection<Zombie> getZombies() {
+        Collection<Zombie> values = null;
+        if (zombies != null) {
+            values = zombies.values();
+        }
+        return values;
+    }
+
+    public void addZombie(Zombie zombie) {
+        if (!warriors.containsKey(zombie.getId())) {
+            zombies.put(zombie.getId(), zombie);
+        }
+    }
+
+    public void deleteZombie(String id) {
+        if (warriors.containsKey(id)) {
+            warriors.remove(id);
+        }
+    }
+
+    public Zombie getZombie(String id) {
+        Zombie selectedZombie = null;
+        if (zombies.containsKey(id)) {
+            selectedZombie = zombies.get(id);
+        }
+        return selectedZombie;
+    }
+
+    public boolean containsZombie(String id) {
+        boolean resp = false;
+        if (zombies.containsKey(id)) {
+            resp = true;
+        }
+        return resp;
+    }
+
+    public void addSpecialObject(SpecialObject object) {
+        if (!objects.containsKey(object.getId())) {
+            objects.put(object.getId(), object);
+        }
+    }
+    public ConcurrentHashMap<Integer, SpecialObject> getSpecialsObject(){
+        return objects;
+    }
+    
+    public void removeSpecialObjects(){
+        objects.clear();
+    }
+
+    public Long getInitalTime() {
+        return initialTime;
+    }
+    
+    public void setFinalToInitialTime(){
+        initialTime=finalTime;
+        finalTime=0;
+    }
+
+    public Long getFinalTime() {
+        return finalTime;
+    }
+
+    public void setFinalTime() {
+        finalTime = System.currentTimeMillis();
+    }
+
 }
