@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author andres
  */
-
+@Service
 @RestController
 @RequestMapping(value="/room")
 public class restController {

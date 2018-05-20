@@ -14,21 +14,21 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <script language="JavaScript" type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"></script>
         <script language="JavaScript" type="text/javascript" src="js/jquery.gamequery.js"></script>
         <script language="JavaScript" type="text/javascript" src="js/gameMap.js"></script>
+        <script language="JavaScript" type="text/javascript" src="js/stompApp.js"></script>
+        <script language="JavaScript" type="text/javascript" src="js/axiosApp.js"></script>
         <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-        <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-        <script src="js/stompApp.js"></script>
+        <script src="/webjars/stomp-websocket/stomp.min.js"></script>  
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
         <script>
-            function loadList(){
-                
-                document.getElementById("aviableGames").innerHTML = app.getAviableGames();                                          
+            function onLoad(){
+                app.aviableGames();               
             }
-            
-        </script>   
+         </script>
         <link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
         <link href="/css/combo.css" rel="stylesheet" type="text/css" media="all" />
     </head>
 
-    <body onload="loadList();">
+    <body onload= "onLoad()">
         <p class="texto">THE LAST</p>
         <div id="playground">
             <div id="index" class="Registro" >

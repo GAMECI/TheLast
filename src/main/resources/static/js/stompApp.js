@@ -1,14 +1,14 @@
 var connected = false;
 var warrior;
 var bullet;
-
+var finalV;
 var app = (function () {
 
 
     var stompClient = null;
     var stompClientN = null;
     var idGame = 0;
-
+    var finalV = "holi";
     class Warrior {
         constructor(name, healt, color, score, x, y, status) {
             this.name = name;
@@ -27,24 +27,6 @@ var app = (function () {
         }
         
     }
-    var getAviableGames = function(){
-        $.get("room/",
-                function (data) {
-                    var avi = "Aviable games: ";
-                    var loadedRooms = data;
-                    
-                    alert("Competitors loaded!");
-                    loadedRooms.forEach(
-                            function (number) {
-                                avi = avi + number.toString()+", ";
-                            }
-                    );
-                    return avi;
-                }
-        );
-        
-
-    };
     
     
     
@@ -72,17 +54,30 @@ var app = (function () {
         });
 
     };
-
-
+    var setFinal= function(final){
+        document.getElementById("aviableGames").innerHTML = final;    
+    }
+    var getAviableGames = function(){
+        var avi = "Aviable games: ";        
+        var final = "";
+        var loadedRooms = gameController.getAviableGames(function(object){
+            object.forEach(function(element){
+              avi+= element.toString()+" ";
+            });           
+            setFinal(avi);
+        }); 
+    };
 
     return {
 
         init: function (idG) {
             //websocket connection
             connectAndSubscribe(idG);
-            connectAndSubscribeB(idG);
 
 
+        },
+        aviableGames : function(){        
+            getAviableGames();            
         },
         publishBullet: function(id, posx,posy){
             if(stompClient!= null){
