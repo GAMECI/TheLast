@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package com.gameci.thelast.stompController;
+
 import java.util.logging.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -18,16 +19,23 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
  *
  * @author andres
  */
-public class TheLastWebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer{
+public class TheLastWebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/app");        
+        config.enableStompBrokerRelay("/topic/").setRelayHost("salamander.rmq.cloudamqp.com").setRelayPort(61613).
+                setClientLogin("oqtkmxzz").
+                setClientPasscode("9cfSF6dYFHvIo0qyooigOOFhzvupBmLQ").
+                setSystemLogin("oqtkmxzz").
+                setSystemPasscode("9cfSF6dYFHvIo0qyooigOOFhzvupBmLQ").
+                setVirtualHost("oqtkmxzz");
+
+        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/stompendpoint").withSockJS();
-        
-}
+        registry.addEndpoint("/stompendpoint").setAllowedOrigins("*").withSockJS();
+
+    }
 }
