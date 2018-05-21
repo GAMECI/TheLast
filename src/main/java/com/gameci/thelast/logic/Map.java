@@ -146,25 +146,8 @@ public class Map {
     public void setFinalTime() {
         finalTime = System.currentTimeMillis();
     }
-    
-    public void setWarriors(ConcurrentHashMap<String, Warrior> warriors){
-        this.warriors=null;
-        this.warriors=warriors;
-    } 
-    
-    public void setZombies(ConcurrentHashMap<String, Zombie> zombies){
-        this.zombies=null;
-        this.zombies=zombies;
-    }
-    
-    public void setObjects(ConcurrentHashMap<Integer, SpecialObject> objects){
-        this.objects=null;
-        this.objects=objects;
-    } 
+
     public void setInitialTime(long initialTime){
        this.initialTime=initialTime;
-    }
-    public void setFinalTime(long finalTime){
-        this.finalTime=finalTime;
     }
 }
