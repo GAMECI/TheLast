@@ -10,10 +10,9 @@ import com.gameci.thelast.logic.SpecialObject;
 import com.gameci.thelast.logic.Warrior;
 
 import com.gameci.thelast.logic.Zombie;
-import com.gameci.thelast.services.GameServices;
-
-import com.gameci.thelast.services.GameServicesException;
-import com.gameci.thelast.services.GameServicesStub;
+import com.gameci.thelast.persistence.GameServices;
+import com.gameci.thelast.persistence.GameServicesException;
+import com.gameci.thelast.persistence.GameServicesMemory;
 import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -52,7 +51,6 @@ public class stompController {
                 System.out.println(game + warrior.getName());
                 gss.createNewMap(idGame);
                 first = true;
-
             }
         }
         try {

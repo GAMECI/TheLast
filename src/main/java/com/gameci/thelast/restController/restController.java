@@ -6,8 +6,8 @@
 package com.gameci.thelast.restController;
 
 import com.gameci.thelast.logic.Map;
-import com.gameci.thelast.services.GameServices;
-import com.gameci.thelast.services.GameServicesException;
+import com.gameci.thelast.persistence.GameServices;
+import com.gameci.thelast.persistence.GameServicesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

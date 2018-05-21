@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gameci.thelast.services;
+package com.gameci.thelast.persistence;
 
 import com.gameci.thelast.logic.Map;
 import com.gameci.thelast.logic.SpecialObject;
@@ -17,20 +17,20 @@ import org.springframework.stereotype.Service;
  * @author andres
  */
 
-@Service
-public class GameServicesStub implements GameServices {
+//@Service
+public class GameServicesMemory implements GameServices {
 
     private ConcurrentHashMap<Integer, Map> games;
-    private GameServicesStub gss;
+    private GameServicesMemory gss;
 
-    public GameServicesStub() {
+    public GameServicesMemory() {
         games = new ConcurrentHashMap<>();
     }
 
     @Override
     public void createNewMap(int idGame) {
         if (!games.containsKey(idGame)) {
-            games.put(idGame, new Map(idGame));
+                games.put(idGame, new Map(idGame));
         }
     }
 

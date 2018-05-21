@@ -150,12 +150,12 @@ $(function () {
 
 
     $("#background").addSprite("background3", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT, animation: background3});	
-	$.playground().registerCallback(function(){		
+	/**$.playground().registerCallback(function(){		
 		if(!gameOver){					
 			app.moveZombie();
             testCollision(playerName);						
 		}	
-	}, SPEED_ZOMBIE);	
+	}, SPEED_ZOMBIE);**/	
 
 
     $("#start").click(function () {
@@ -201,7 +201,7 @@ $(function () {
   
     
 
-    $(document).keydown(function(e){
+  /**  $(document).keydown(function(e){
         if(alReady){
             var playerposx = $("#"+playerName).x();
             var playerposy = $("#"+playerName).y();
@@ -236,6 +236,6 @@ $(function () {
                     break;
             }
         }
-    });
+    });**/
 });
 

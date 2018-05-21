@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gameci.thelast.services;
+package com.gameci.thelast.persistence;
 
 import com.gameci.thelast.logic.Map;
 import com.gameci.thelast.logic.SpecialObject;
