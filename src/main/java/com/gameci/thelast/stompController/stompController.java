@@ -48,7 +48,6 @@ public class stompController {
         synchronized (gss) {
             Map game = gss.getMap(idGame);
             if (game == null) {
-                System.out.println(game + warrior.getName());
                 gss.createNewMap(idGame);
                 first = true;
             }
