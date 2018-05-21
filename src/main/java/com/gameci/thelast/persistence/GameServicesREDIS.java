@@ -43,8 +43,8 @@ public class GameServicesREDIS implements GameServices {
     @Override
     public void removeWarriorOfMap(String warriorName, int idGame) throws GameServicesException {
         if (template.hasKey("W:" + String.valueOf(idGame))) {
-            if (template.opsForSet().isMember(String.valueOf(idGame), warriorName)) {
-                template.opsForSet().remove(String.valueOf(idGame), warriorName);
+            if (template.opsForSet().isMember("W:"+String.valueOf(idGame), warriorName)) {
+                template.opsForSet().remove("W:"+String.valueOf(idGame), warriorName);
             }
         }
     }
@@ -65,7 +65,6 @@ public class GameServicesREDIS implements GameServices {
             Set<String> warriors = template.opsForSet().members("W:" + String.valueOf(idGame));
             ConcurrentHashMap<String, Warrior> warriorsHashMap = new ConcurrentHashMap<>();
             for (String i : warriors) {
-                System.out.println(i);
                 String[] information = ((String) template.opsForHash().get(i, "information")).split(",");
                 Warrior warrior = new Warrior(i, Integer.valueOf(information[0]), information[1], Integer.valueOf(information[2]), Integer.valueOf(information[3]), Integer.valueOf(information[4]), information[5], Integer.valueOf(information[6]));
                 map.addWarrior(warrior);
@@ -103,8 +102,8 @@ public class GameServicesREDIS implements GameServices {
     @Override
     public void updateZombie(Zombie zombie, int idGame) throws GameServicesException {
         if (template.hasKey("Z:" + String.valueOf(idGame))) {
-            if (template.opsForSet().isMember(String.valueOf(idGame), zombie.getId())) {
-                template.opsForSet().remove(String.valueOf(idGame), zombie.getId());
+            if (template.opsForSet().isMember("Z:"+String.valueOf(idGame), zombie.getId())) {
+                template.opsForSet().remove("Z:"+String.valueOf(idGame), zombie.getId());
             }
         }
         addNewZombieToMap(zombie, idGame);
@@ -119,7 +118,7 @@ public class GameServicesREDIS implements GameServices {
     @Override
     public void removeSpecialObjectsToMap(int idGame) throws GameServicesException {
         if (template.hasKey("O:" + String.valueOf(idGame))) {
-            template.opsForList().leftPop("O:" + String.valueOf(idGame));
+            template.opsForSet().pop("O:" + String.valueOf(idGame));
         }
     }
 

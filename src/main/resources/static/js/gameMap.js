@@ -15,6 +15,7 @@ var SPEED_ZOMBIE = 1;
 var zombies = {};
 var numZombies = 0;
 var lastAtack=undefined;
+var zombieAtack=false;
 
 
 var removeCharacters=function(event){
@@ -30,7 +31,10 @@ var addObject= function(event){
 };
 
 
-var addPlayer = function (event) {    
+var addPlayer = function (event) {
+    if(event.name=warrior.name){
+        zombieAtack=true;
+    }
     if ($("#" + event.name).val() != undefined)
         $("#" + event.name).remove();
         if (event.status == "up" || event.status == "down") {
@@ -151,7 +155,7 @@ $(function () {
 
     $("#background").addSprite("background3", {width: PLAYGROUND_WIDTH, height: PLAYGROUND_HEIGHT, animation: background3});	
 	$.playground().registerCallback(function(){		
-		if(!gameOver){					
+		if(!gameOver && zombieAtack){
 			app.moveZombie();
             testCollision(playerName);						
 		}	
@@ -193,7 +197,7 @@ $(function () {
     var sendCharacters = function(){
         setTimeout(function(){
             app.publishPlayer(122,416,color,playerName,"idle");
-            for(i=0; i<3;i++){                      
+            for(i=0; i<1;i++){
                 app.publishZombie(i,500*i,500*i,"idle")
             }    
         },200);

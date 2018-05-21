@@ -64,6 +64,19 @@ var app = (function () {
                 }
 
             });
+            stompClient.subscribe('/topic/object.' + idG, function (event) {
+                    object=gameController.getObject(function(object){
+                    addObject(object);
+                });
+            });
+            stompClient.subscribe('/topic/zombie.' + idG, function (event) {
+                var jsonEvent = JSON.parse(event.body);
+                addZombie(jsonEvent);
+            });
+            stompClient.subscribe('/topic/gameOver.' + idG, function (event) {
+                var jsonEvent = JSON.parse(event.body);
+                removeCharacters(jsonEvent);
+            });
             connected = true;
         });
 
