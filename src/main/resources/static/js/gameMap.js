@@ -197,7 +197,7 @@ $(function () {
     var sendCharacters = function(){
         setTimeout(function(){
             app.publishPlayer(122,416,color,playerName,"idle");
-            for(i=0; i<1;i++){
+            for(i=0; i<3;i++){
                 app.publishZombie(i,500*i,500*i,"idle")
             }    
         },200);
